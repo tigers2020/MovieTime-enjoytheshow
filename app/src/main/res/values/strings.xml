@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Movie Time - enjoy the show</string>
+
+    <string name="now_playing">Now Playing</string>
+    <string name="box_office">Box Office</string>
+    <string name="on_dvds">On DVDs</string>
+    <string name="top_box_office">Top Box Office</string>
+    <string name="up_coming">Upcoming</string>
+    <string name="popular">Popular</string>
+    <string name="api_key">api_key</string>
+    <string name="poster_image">Poster Image</string>
+    <string name="genres">Genres</string>
+    <string name="release_date">Release Date</string>
+    <string name="production_companies">Production companies</string>
+    <string name="movies">Movies</string>
+    <string name="budget">Budget : </string>
+    <string name="revenue">Revenue : </string>
+    <string name="investment">Investment</string>
+    <string name="adult_contents">Adult Contents</string>
+    <string name="runtime">Runtime</string>
+
+    <string name="key_include_adult">include_adult</string>
+    <string name="watch_trailer">Watch Trailer</string>
+    <string name="reviews">Reviews</string>
+
+    <string name="my_bookmark_list">My Bookmark List</string>
+
+    <!-- api path and query string-->
+
+    <string name="path_discover" translatable="false">discover</string>
+    <string name="path_tv" translatable="false">tv</string>
+    <string name="path_find" translatable="false">find</string>
+    <string name="path_genre" translatable="false">genre</string>
+    <string name="path_lists" translatable="false">lists</string>
+    <string name="path_job" translatable="false">job</string>
+    <string name="path_keyword" translatable="false">keyword</string>
+    <string name="path_account_states" translatable="false">account_states</string>
+    <string name="path_alternative_titles" translatable="false">alternative_titles</string>
+    <string name="path_credits" translatable="false">credits</string>
+    <string name="path_images" translatable="false">images</string>
+    <string name="path_release_dates" translatable="false">release_dates</string>
+    <string name="path_videos" translatable="false">videos </string>
+    <string name="path_translations" translatable="false">translations</string>
+    <string name="path_recommendations" translatable="false">recommendations</string>
+    <string name="path_similar" translatable="false">similar</string>
+    <string name="path_reviews" translatable="false">reviews</string>
+    <string name="path_latest" translatable="false">latest</string>
+    <string name="path_now_playing" translatable="false">now_playing</string>
+    <string name="path_popular" translatable="false">popular</string>
+    <string name="path_top_rated" translatable="false">top_rated</string>
+    <string name="path_upcoming" translatable="false">upcoming</string>
+    <string name="path_network" translatable="false">network</string>
+    <string name="path_person" translatable="false">person</string>
+    <string name="path_movie_credits" translatable="false">movie_credits</string>
+    <string name="path_tv_credits" translatable="false">tv_credits</string>
+    <string name="path_combined_credits" translatable="false">combined_credits</string>
+    <string name="path_external_ids" translatable="false">external_ids</string>
+    <string name="path_tagged_images" translatable="false">tagged_images</string>
+    <string name="path_changes" translatable="false">changes</string>
+    <string name="path_review" translatable="false">review</string>
+    <string name="path_search" translatable="false">search</string>
+    <string name="path_company" translatable="false">company</string>
+    <string name="path_collection" translatable="false">collection</string>
+    <string name="path_movie" translatable="false">movie</string>
+    <string name="path_multi" translatable="false">multi</string>
+    <string name="path_timezones" translatable="false">timezones</string>
+    <string name="path_episode" translatable="false">episode</string>
+    <string name="query_language">language</string>
+
+
+</resources>
