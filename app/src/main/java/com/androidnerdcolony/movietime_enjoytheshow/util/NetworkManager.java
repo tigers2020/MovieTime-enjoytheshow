@@ -3,7 +3,7 @@ package com.androidnerdcolony.movietime_enjoytheshow.util;
 import android.content.Context;
 import android.util.Log;
 
-import com.androidnerdcolony.movietime_enjoytheshow.data.DiscoverData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;

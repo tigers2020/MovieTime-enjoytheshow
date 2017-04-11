@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
-import com.androidnerdcolony.movietime_enjoytheshow.data.DiscoverData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
 import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
 import com.squareup.picasso.Picasso;
 

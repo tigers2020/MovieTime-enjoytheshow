@@ -14,28 +14,17 @@ import java.util.Map;
 
 public class ApiUrlManager {
 
-    private String url;
     private Uri uri;
 
-    public ApiUrlManager(String url) {
-        this.url = url;
-    }
     public ApiUrlManager(Uri uri){this.uri = uri;}
     private ApiUrlManager(ApiBuilder builder) {
-        this.url = builder.url;
         this.uri = builder.uri;
     }
 
-    public String getUrl() {
-        return url;
-    }
     public Uri getUri(){
         return uri;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
     public void setUri(Uri uri){
         this.uri = uri;
     }
@@ -45,7 +34,6 @@ public class ApiUrlManager {
         private static final String BASE_URL = "api.themoviedb.org";
         private static final String API_KEY = BuildConfig.API_KEY;
         private static final String VERSION3 = "3";
-        private String url;
         private Uri uri;
         private Context mContext;
 
@@ -54,32 +42,27 @@ public class ApiUrlManager {
         }
 
         public ApiBuilder base() {
-            this.url = BASE_URL + "/" + VERSION3;
-            this.uri.buildUpon().scheme("https").authority(BASE_URL).appendPath(VERSION3).build();
+            this.uri.buildUpon().scheme("https").authority(BASE_URL).appendPath(VERSION3);
             return this;
         }
 
         ApiBuilder movie() {
-            this.url = this.url + "/" + mContext.getString(R.string.path_movie);
             this.uri.buildUpon().appendPath(mContext.getString(R.string.path_movie)).build();
             return this;
         }
 
         public ApiBuilder lists() {
-            this.url = this.url + "/" + mContext.getString(R.string.path_lists);
             this.uri.buildUpon().appendPath(mContext.getString(R.string.path_lists)).build();
             return this;
         }
 
         ApiBuilder movieId(String movieId) {
-            this.url = this.url + "/" + movieId;
             this.uri.buildUpon().appendPath(movieId).build();
             return this;
         }
 
         ApiBuilder apiKey() {
-            this.url = this.url + "?api_key=" + BuildConfig.API_KEY;
-            this.uri.buildUpon().appendQueryParameter(mContext.getString(R.string.api_key), BuildConfig.API_KEY).build();
+            this.uri.buildUpon().appendQueryParameter(mContext.getString(R.string.api_key), API_KEY).build();
             return this;
         }
 
@@ -94,18 +77,15 @@ public class ApiUrlManager {
         }
 
         ApiBuilder tv() {
-            this.url = this.url + "/" + mContext.getString(R.string.path_tv);
             this.uri.buildUpon().appendPath(mContext.getString(R.string.path_tv)).build();
             return this;
         }
 
         ApiBuilder tvId(String tvId) {
-            this.url = this.url + "/" + tvId;
             this.uri.buildUpon().appendPath(tvId).build();
             return this;
         }
         ApiBuilder discover(){
-            this.url = this.url + "/" + mContext.getString(R.string.path_discover);
             this.uri.buildUpon().appendPath(mContext.getString(R.string.path_discover)).build();
             return this;
         }

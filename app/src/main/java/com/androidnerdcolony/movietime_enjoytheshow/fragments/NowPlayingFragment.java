@@ -1,6 +1,7 @@
 package com.androidnerdcolony.movietime_enjoytheshow.fragments;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
-import com.androidnerdcolony.movietime_enjoytheshow.data.DiscoverData;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
+import com.androidnerdcolony.movietime_enjoytheshow.sync.MovieSyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,36 +41,32 @@ public class NowPlayingFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getContext();
-
-
-        list.add(setDiscoverList());
-
-        mCardViewAdapter = new CardViewAdapter(mContext, list);
-
     }
 
-    private DiscoverData.ResultsBean setDiscoverList() {
-        DiscoverData.ResultsBean discover = new DiscoverData.ResultsBean();
-        discover.setAdult(true);
-        discover.setBackdrop_path("/6aUWe0GSl69wMTSWWexsorMIvwU.jpg");
-        discover.setPoster_path("/tWqifoYuwLETmmasnGHO7xBjEtt.jpg");
-        discover.setOverview("A live-action adaptation of Disney's version of the classic 'Beauty and the Beast' tale of a cursed prince and a beautiful young woman who helps him break the spell.\",\n");
-        discover.setRelease_date("2017-03-16");
-        List<Integer> genre_ids = new ArrayList<>();
-        genre_ids.add(14);
-        genre_ids.add(10402);
-        genre_ids.add(10749);
-        discover.setGenre_ids(genre_ids);
-        discover.setId(321612);
-        discover.setTitle("Beauty and the Beast");
-        discover.setOriginal_title("Beauty and the Beast");
-        discover.setOriginal_language("en");
-        discover.setPopularity(217.902232);
-        discover.setVote_count(1440);
-        discover.setVideo(false);
-        discover.setVote_average(7);
+    class loadDiscoverList extends AsyncTask<String, String, DiscoverData> {
+        Context context;
+        public loadDiscoverList(Context context) {
+            this.context = context;
 
-        return discover;
+        }
+
+        @Override
+        protected void onPostExecute(DiscoverData discoverData) {
+            super.onPostExecute(discoverData);
+            if (discoverData != null) {
+                list = discoverData.getResults();
+                mCardViewAdapter = new CardViewAdapter(context, list);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                nowPlayingView.setLayoutManager(layoutManager);
+                nowPlayingView.setAdapter(mCardViewAdapter);
+            }
+        }
+
+        @Override
+        protected DiscoverData doInBackground(String... strings) {
+
+            return MovieSyncTask.DiscoverMovies(context);
+        }
     }
 
     @Nullable
@@ -76,9 +74,8 @@ public class NowPlayingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        nowPlayingView.setLayoutManager(layoutManager);
-        nowPlayingView.setAdapter(mCardViewAdapter);
+        new loadDiscoverList(getContext()).execute("");
+
         return view;
     }
 
@@ -87,4 +84,6 @@ public class NowPlayingFragment extends Fragment {
         super.onDestroyView();
         mUnbinder.unbind();
     }
+
+
 }

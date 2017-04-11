@@ -1,4 +1,4 @@
-package com.androidnerdcolony.movietime_enjoytheshow.data;
+package com.androidnerdcolony.movietime_enjoytheshow.objects;
 
 import java.util.List;
 
