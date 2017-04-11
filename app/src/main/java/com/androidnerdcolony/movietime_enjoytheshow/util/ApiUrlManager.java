@@ -8,6 +8,8 @@ import com.androidnerdcolony.movietime_enjoytheshow.R;
 
 import java.util.Map;
 
+import timber.log.Timber;
+
 /**
  * Created by tiger on 4/8/2017.
  */
@@ -34,15 +36,17 @@ public class ApiUrlManager {
         private static final String BASE_URL = "api.themoviedb.org";
         private static final String API_KEY = BuildConfig.API_KEY;
         private static final String VERSION3 = "3";
-        private Uri uri;
+        private Uri uri = Uri.EMPTY;
         private Context mContext;
 
         ApiBuilder(Context context) {
             mContext = context;
         }
 
-        public ApiBuilder base() {
-            this.uri.buildUpon().scheme("https").authority(BASE_URL).appendPath(VERSION3);
+        ApiBuilder base() {
+            this.uri.buildUpon().scheme("https").authority(BASE_URL).appendPath(VERSION3).build();
+
+            Timber.d("this uri = " + this.uri.toString());
             return this;
         }
 

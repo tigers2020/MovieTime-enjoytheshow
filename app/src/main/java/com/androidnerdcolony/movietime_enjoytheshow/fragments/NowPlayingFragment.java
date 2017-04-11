@@ -1,6 +1,7 @@
 package com.androidnerdcolony.movietime_enjoytheshow.fragments;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,9 +16,11 @@ import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
 import com.androidnerdcolony.movietime_enjoytheshow.sync.MovieSyncTask;
+import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,9 +46,9 @@ public class NowPlayingFragment extends Fragment {
         mContext = getContext();
     }
 
-    class loadDiscoverList extends AsyncTask<String, String, DiscoverData> {
+    private class loadDiscoverList extends AsyncTask<Uri, String, DiscoverData> {
         Context context;
-        public loadDiscoverList(Context context) {
+        loadDiscoverList(Context context) {
             this.context = context;
 
         }
@@ -63,10 +66,12 @@ public class NowPlayingFragment extends Fragment {
         }
 
         @Override
-        protected DiscoverData doInBackground(String... strings) {
+        protected DiscoverData doInBackground(Uri... uris) {
 
-            return MovieSyncTask.DiscoverMovies(context);
+            return MovieSyncTask.DiscoverMovies(context, uris[0]);
         }
+
+
     }
 
     @Nullable
@@ -74,7 +79,11 @@ public class NowPlayingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        new loadDiscoverList(getContext()).execute("");
+        Map<String, String> queryString;
+        queryString = ApiUtils.getQueryStrings(mContext);
+        Uri uri = ApiUtils.getDiscoverMovieUri(mContext, queryString);
+
+        new loadDiscoverList(getContext()).execute(uri);
 
         return view;
     }
