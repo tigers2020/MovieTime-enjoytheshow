@@ -28,6 +28,7 @@ public class MovieSyncTask {
             String jsonMovieResponse = ApiUtils.getResponseFromHttpUrl(discoverUrl);
             Gson gson = new Gson();
             return gson.fromJson(jsonMovieResponse, DiscoverData.class);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

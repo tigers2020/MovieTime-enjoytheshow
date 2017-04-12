@@ -43,7 +43,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         DiscoverData.ResultsBean discover = mDiscoverDataList.get(position);
-        String posterUrl = ApiUtils.getImageUrl(discover.getBackdrop_path());
+        String posterUrl = ApiUtils.getImageUrl(discover.getPoster_path());
         String backdropUrl = ApiUtils.getImageUrl(discover.getBackdrop_path());
         int posterWidth = holder.posterView.getWidth();
         int posterHeight = (int)(posterWidth * 1.5);

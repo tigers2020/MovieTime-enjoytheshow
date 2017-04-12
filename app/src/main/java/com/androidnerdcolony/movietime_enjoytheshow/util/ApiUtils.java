@@ -30,7 +30,7 @@ public class ApiUtils {
 
     public static Uri getDiscoverMovieUri(Context context, Map<String, String> queryString) {
         Uri uri;
-        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().movie().apiKey().queryStrings(queryString).build();
+        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().discover().movie().apiKey().queryStrings(queryString).build();
         uri = manager.getUri();
         return uri;
     }
@@ -80,5 +80,21 @@ public class ApiUtils {
         }finally {
             connection.disconnect();
         }
+    }
+
+    public static Uri getNowPlayingUri(Context context, Map<String, String> queryString) {
+        Uri uri;
+        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().movie().now_playing().apiKey().queryStrings(queryString).build();
+        uri = manager.getUri();
+
+        return uri;
+    }
+
+    public static Uri getTopBoxOfficeUri(Context context, Map<String, String> queryString) {
+        Uri uri;
+        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().movie().popular().apiKey().queryStrings(queryString).build();
+        uri = manager.getUri();
+
+        return uri;
     }
 }

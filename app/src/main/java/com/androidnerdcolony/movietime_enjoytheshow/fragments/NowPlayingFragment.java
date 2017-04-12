@@ -70,8 +70,6 @@ public class NowPlayingFragment extends Fragment {
 
             return MovieSyncTask.DiscoverMovies(context, uris[0]);
         }
-
-
     }
 
     @Nullable
@@ -81,7 +79,8 @@ public class NowPlayingFragment extends Fragment {
         mUnbinder = ButterKnife.bind(this, view);
         Map<String, String> queryString;
         queryString = ApiUtils.getQueryStrings(mContext);
-        Uri uri = ApiUtils.getDiscoverMovieUri(mContext, queryString);
+        Uri uri;
+        uri = ApiUtils.getNowPlayingUri(mContext, queryString);
 
         new loadDiscoverList(getContext()).execute(uri);
 

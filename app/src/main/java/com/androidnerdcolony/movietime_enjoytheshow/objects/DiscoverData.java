@@ -82,7 +82,7 @@ public class DiscoverData {
         private double popularity;
         private int vote_count;
         private boolean video;
-        private int vote_average;
+        private float vote_average;
         private List<Integer> genre_ids;
 
         public String getPoster_path() {
@@ -181,11 +181,11 @@ public class DiscoverData {
             this.video = video;
         }
 
-        public int getVote_average() {
+        public float getVote_average() {
             return vote_average;
         }
 
-        public void setVote_average(int vote_average) {
+        public void setVote_average(float vote_average) {
             this.vote_average = vote_average;
         }
 
