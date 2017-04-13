@@ -13,7 +13,6 @@ import android.util.Log;
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.NowPlayingFragment;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.PopularFragment;
-import com.androidnerdcolony.movietime_enjoytheshow.fragments.TopBoxOfficeFragment;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.UpComingFragment;
 
 import java.util.ArrayList;
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     public void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new NowPlayingFragment(), getString(R.string.now_playing));
-        adapter.addFragment(new TopBoxOfficeFragment(), getString(R.string.top_box_office));
         adapter.addFragment(new UpComingFragment(), getString(R.string.up_coming));
         adapter.addFragment(new PopularFragment(), getString(R.string.popular));
         viewPager.setAdapter(adapter);

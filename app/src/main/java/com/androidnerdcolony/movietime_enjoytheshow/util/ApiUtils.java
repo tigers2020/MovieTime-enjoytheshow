@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import timber.log.Timber;
+
 /**
  * Created by tiger on 4/10/2017.
  */
@@ -95,6 +97,21 @@ public class ApiUtils {
         ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().movie().popular().apiKey().queryStrings(queryString).build();
         uri = manager.getUri();
 
+        return uri;
+    }
+
+    public static Uri getUpcomingUri(Context context, Map<String, String> queryString) {
+        Uri uri;
+        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().movie().upcoming().apiKey().queryStrings(queryString).build();
+        uri = manager.getUri();
+        Timber.d("upcoming Uri : " + uri.toString());
+        return uri;
+    }
+
+    public static Uri getPopularUri(Context context, Map<String, String> queryString) {
+       Uri uri;
+        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().movie().popular().apiKey().queryStrings(queryString).build();
+        uri = manager.getUri();
         return uri;
     }
 }

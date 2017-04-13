@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,46 +30,19 @@ import butterknife.Unbinder;
  * Created by tiger on 4/9/2017.
  */
 
-public class NowPlayingFragment extends Fragment {
-
-    private Context mContext;
-    private Unbinder mUnbinder;
+public class NowPlayingFragment extends Fragment implements CardViewAdapter.PostClickListener {
 
     @BindView(R.id.recycle_now_playing)
     RecyclerView nowPlayingView;
     CardViewAdapter mCardViewAdapter;
     List<DiscoverData.ResultsBean> list = new ArrayList<>();
+    private Context mContext;
+    private Unbinder mUnbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getContext();
-    }
-
-    private class loadDiscoverList extends AsyncTask<Uri, String, DiscoverData> {
-        Context context;
-        loadDiscoverList(Context context) {
-            this.context = context;
-
-        }
-
-        @Override
-        protected void onPostExecute(DiscoverData discoverData) {
-            super.onPostExecute(discoverData);
-            if (discoverData != null) {
-                list = discoverData.getResults();
-                mCardViewAdapter = new CardViewAdapter(context, list);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-                nowPlayingView.setLayoutManager(layoutManager);
-                nowPlayingView.setAdapter(mCardViewAdapter);
-            }
-        }
-
-        @Override
-        protected DiscoverData doInBackground(Uri... uris) {
-
-            return MovieSyncTask.DiscoverMovies(context, uris[0]);
-        }
     }
 
     @Nullable
@@ -91,6 +64,38 @@ public class NowPlayingFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void PostClicked(View v, int position) {
+        
+    }
+
+    private class loadDiscoverList extends AsyncTask<Uri, String, DiscoverData> {
+        Context context;
+
+        loadDiscoverList(Context context) {
+            this.context = context;
+
+        }
+
+        @Override
+        protected void onPostExecute(DiscoverData discoverData) {
+            super.onPostExecute(discoverData);
+            if (discoverData != null) {
+                list = discoverData.getResults();
+                mCardViewAdapter = new CardViewAdapter(context, list, this);
+                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
+                nowPlayingView.setLayoutManager(layoutManager);
+                nowPlayingView.setAdapter(mCardViewAdapter);
+            }
+        }
+
+        @Override
+        protected DiscoverData doInBackground(Uri... uris) {
+
+            return MovieSyncTask.DiscoverMovies(context, uris[0]);
+        }
     }
 
 
