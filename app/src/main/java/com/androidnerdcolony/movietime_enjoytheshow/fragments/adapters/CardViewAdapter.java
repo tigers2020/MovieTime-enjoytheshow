@@ -2,6 +2,7 @@ package com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
     private Context context;
     private static PostClickListener postClickListener;
 
-    private List<DiscoverData.ResultsBean> mDiscoverDataList;
+    private static List<DiscoverData.ResultsBean> mDiscoverDataList;
 
     public interface PostClickListener{
         public void PostClicked(View v, int position);
@@ -37,7 +38,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
     public CardViewAdapter(Context context, List<DiscoverData.ResultsBean> discoverDataList, PostClickListener postClickListener){
 
         this.context = context;
-        this.postClickListener = postClickListener;
+        CardViewAdapter.postClickListener = postClickListener;
         mDiscoverDataList = discoverDataList;
 
     }
@@ -73,7 +74,6 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
             itemView.setOnClickListener(this);
 
 
@@ -82,6 +82,8 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
         @Override
         public void onClick(View view) {
 
+            Log.d("CardView: ", String.valueOf(titleView.getText()));
+            Log.d("CardView Data: ", mDiscoverDataList.get(this.getLayoutPosition()).getTitle());
             postClickListener.PostClicked(view, this.getLayoutPosition());
         }
     }

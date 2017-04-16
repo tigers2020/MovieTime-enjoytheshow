@@ -30,7 +30,7 @@ import butterknife.Unbinder;
  * Created by tiger on 4/9/2017.
  */
 
-public class NowPlayingFragment extends Fragment implements CardViewAdapter.PostClickListener {
+public class TvListFragment extends Fragment implements CardViewAdapter.PostClickListener{
 
     @BindView(R.id.recycle_now_playing)
     RecyclerView nowPlayingView;
@@ -48,13 +48,12 @@ public class NowPlayingFragment extends Fragment implements CardViewAdapter.Post
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         Map<String, String> queryString;
         queryString = ApiUtils.getQueryStrings(mContext);
         Uri uri;
-        uri = ApiUtils.getNowPlayingUri(mContext, queryString);
-
+        uri = ApiUtils.getTvListUri(mContext, queryString);
         new loadDiscoverList(getContext()).execute(uri);
 
         return view;
@@ -68,7 +67,7 @@ public class NowPlayingFragment extends Fragment implements CardViewAdapter.Post
 
     @Override
     public void PostClicked(View v, int position) {
-        
+
     }
 
     private class loadDiscoverList extends AsyncTask<Uri, String, DiscoverData> {
@@ -84,7 +83,7 @@ public class NowPlayingFragment extends Fragment implements CardViewAdapter.Post
             super.onPostExecute(discoverData);
             if (discoverData != null) {
                 list = discoverData.getResults();
-                mCardViewAdapter = new CardViewAdapter(context, list, this);
+                mCardViewAdapter = new CardViewAdapter(context, list, TvListFragment.this);
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
                 nowPlayingView.setLayoutManager(layoutManager);
                 nowPlayingView.setAdapter(mCardViewAdapter);

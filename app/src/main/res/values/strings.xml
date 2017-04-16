@@ -113,4 +113,6 @@
     <string name="with_release_type" translatable="false">with_release_type</string>
     <string name="with_original_language" translatable="false">with_original_language</string>
     <string name="without_keywords" translatable="false">without_keywords</string>
+    <string name="movie_backdrop_image">movie backdrop image</string>
+    <string name="home">Home</string>
 </resources>

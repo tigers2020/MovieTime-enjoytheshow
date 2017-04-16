@@ -25,7 +25,7 @@ public class MoviePreferenceManager {
         String language;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (!preferences.contains(context.getString(R.string.language))){
-            language = Locale.getDefault().getDisplayLanguage();
+            language = Locale.getDefault().getLanguage();
         }
         else{
             language = preferences.getString(context.getString(R.string.language), Locale.getDefault().getDisplayCountry());

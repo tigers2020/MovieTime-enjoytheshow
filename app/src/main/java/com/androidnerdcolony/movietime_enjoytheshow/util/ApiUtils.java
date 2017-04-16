@@ -47,7 +47,6 @@ public class ApiUtils {
 
     public static Map<String, String> setDefaultQueryString(Context context) {
         Map<String, String> queryString = new HashMap<>();
-
         queryString.put(context.getString(R.string.language), MoviePreferenceManager.getLanguage(context));
         queryString.put(context.getString(R.string.sort_by), MoviePreferenceManager.getSortBy(context));
         queryString.put(context.getString(R.string.include_adult), MoviePreferenceManager.isIncludeAdult(context));
@@ -100,18 +99,30 @@ public class ApiUtils {
         return uri;
     }
 
-    public static Uri getUpcomingUri(Context context, Map<String, String> queryString) {
+    public static Uri getDiscoverUpcomingMovie(Context context, Map<String, String> queryString) {
         Uri uri;
-        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().movie().upcoming().apiKey().queryStrings(queryString).build();
+        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().discover().movie().apiKey().queryStrings(queryString).build();
         uri = manager.getUri();
         Timber.d("upcoming Uri : " + uri.toString());
         return uri;
     }
 
-    public static Uri getPopularUri(Context context, Map<String, String> queryString) {
+    public static Uri getDiscoverMovie(Context context, Map<String, String> queryString) {
        Uri uri;
-        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().movie().popular().apiKey().queryStrings(queryString).build();
+        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().discover().movie().apiKey().queryStrings(queryString).build();
         uri = manager.getUri();
         return uri;
+    }
+
+    public static Uri getMovieDetailUri(Context context, int movieId) {
+        Uri uri;
+        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().movie().movieId(String.valueOf(movieId)).apiKey().build();
+        uri = manager.getUri();
+        return uri;
+    }
+
+    public static Uri getTvListUri(Context context, Map<String, String> queryString) {
+        ApiUrlManager manager = new ApiUrlManager.ApiBuilder(context).base().tv().queryStrings(queryString).build();
+        return manager.getUri();
     }
 }

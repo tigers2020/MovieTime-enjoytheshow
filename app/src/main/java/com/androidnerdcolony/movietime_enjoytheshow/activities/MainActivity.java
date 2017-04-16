@@ -11,9 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
-import com.androidnerdcolony.movietime_enjoytheshow.fragments.NowPlayingFragment;
-import com.androidnerdcolony.movietime_enjoytheshow.fragments.PopularFragment;
-import com.androidnerdcolony.movietime_enjoytheshow.fragments.UpComingFragment;
+import com.androidnerdcolony.movietime_enjoytheshow.fragments.HomeListFragment;
+import com.androidnerdcolony.movietime_enjoytheshow.fragments.MovieListFragment;
+import com.androidnerdcolony.movietime_enjoytheshow.fragments.TvListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,27 +38,27 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setupViewPager(mViewPager);
+
+        setupViewPager();
         tabLayout.setupWithViewPager(mViewPager);
 
         Log.d("testing", "something testing for log");
     }
 
-    public void setupViewPager(ViewPager viewPager) {
+    public void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new NowPlayingFragment(), getString(R.string.now_playing));
-        adapter.addFragment(new UpComingFragment(), getString(R.string.up_coming));
-        adapter.addFragment(new PopularFragment(), getString(R.string.popular));
-        viewPager.setAdapter(adapter);
+        adapter.addFragment(new HomeListFragment(),getString(R.string.home));
+        adapter.addFragment(new MovieListFragment(), getString(R.string.movies));
+        adapter.addFragment(new TvListFragment(), getString(R.string.path_tv));
+        mViewPager.setAdapter(adapter);
 
     }
-    class ViewPagerAdapter extends FragmentPagerAdapter{
+    private class ViewPagerAdapter extends FragmentPagerAdapter{
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
 
-        public ViewPagerAdapter(FragmentManager fm) {
+        ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return mFragmentList.size();
+            return mFragmentTitleList.size();
         }
-        public void addFragment(Fragment fragment, String title){
+        void addFragment(Fragment fragment, String title){
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
