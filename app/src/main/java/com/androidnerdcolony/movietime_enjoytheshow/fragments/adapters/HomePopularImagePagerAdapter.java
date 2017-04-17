@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
@@ -45,7 +45,7 @@ public class HomePopularImagePagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((LinearLayout)object);
+        container.removeView((RelativeLayout)object);
     }
 
     @BindView(R.id.backdrop)

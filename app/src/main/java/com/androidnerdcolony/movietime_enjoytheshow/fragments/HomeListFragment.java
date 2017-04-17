@@ -1,12 +1,9 @@
 package com.androidnerdcolony.movietime_enjoytheshow.fragments;
 
 import android.content.Context;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,26 +12,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.androidnerdcolony.movietime_enjoytheshow.BuildConfig;
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.HomePopularImagePagerAdapter;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
-import com.androidnerdcolony.movietime_enjoytheshow.sync.MovieSyncTask;
-import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
+import com.androidnerdcolony.movietime_enjoytheshow.util.ApiEndpointInterface;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by tiger on 4/9/2017.
  */
 
-public class HomeListFragment extends Fragment implements CardViewAdapter.PostClickListener{
+public class HomeListFragment extends Fragment implements CardViewAdapter.PostClickListener {
 
     @BindView(R.id.recycle_now_playing)
     RecyclerView nowPlayingView;
@@ -43,13 +48,58 @@ public class HomeListFragment extends Fragment implements CardViewAdapter.PostCl
     CardViewAdapter mCardViewAdapter;
     HomePopularImagePagerAdapter mHomePopularImagePagerAdapter;
     List<DiscoverData.ResultsBean> list = new ArrayList<>();
-    private Context mContext;
+    private Context context;
     private Unbinder mUnbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
+        context = getContext();
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(
+                        new Interceptor() {
+                            @Override
+                            public Response intercept(Chain chain) throws IOException {
+                                Request request = chain.request().newBuilder().build();
+                                return chain.proceed(request);
+                            }}).build();
+
+        Retrofit retrofitRef = new Retrofit.Builder()
+                .baseUrl("https://api.themoviedb.org/")
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        ApiEndpointInterface service = retrofitRef.create(ApiEndpointInterface.class);
+
+        Call<DiscoverData> call = service.getDiscoverMovie(BuildConfig.API_KEY, getString(R.string.popularity_desc));
+
+        call.enqueue(new Callback<DiscoverData>() {
+            @Override
+            public void onResponse(Call<DiscoverData> call, retrofit2.Response<DiscoverData> response) {
+                Log.d("MainRetrifot", "onResponse: " + response.code());
+
+                if (response.isSuccessful()){
+                    DiscoverData data = response.body();
+                    list = data.getResults();
+                    mHomePopularImagePagerAdapter = new HomePopularImagePagerAdapter(context, list);
+                    mostPopularList.setAdapter(mHomePopularImagePagerAdapter);
+
+                    mCardViewAdapter = new CardViewAdapter(context, list, HomeListFragment.this);
+                    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
+                    nowPlayingView.setLayoutManager(layoutManager);
+                    nowPlayingView.setAdapter(mCardViewAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DiscoverData> call, Throwable t) {
+
+            }
+        });
+
     }
 
     @Nullable
@@ -57,30 +107,6 @@ public class HomeListFragment extends Fragment implements CardViewAdapter.PostCl
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        Map<String, String> popularQueryString;
-        Map<String, String> upcomingQueryString;
-        popularQueryString = ApiUtils.getQueryStrings(mContext);
-        upcomingQueryString = ApiUtils.getQueryStrings(mContext);
-        upcomingQueryString.put(getString(R.string.release_date_gte), "2017-04-15");
-        popularQueryString.put(getString(R.string.sort_by), getString(R.string.popularity_desc));
-        Uri uri;
-        uri = ApiUtils.getDiscoverUpcomingMovie(mContext, upcomingQueryString);
-        Uri popularUri = ApiUtils.getDiscoverMovie(mContext, popularQueryString);
-
-        Log.d("upcoming", uri.toString());
-        new loadDiscoverList(getContext(), 1).execute(popularUri);
-        new loadDiscoverList(getContext(), 2).execute(uri);
-        mostPopularList.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return 0;
-            }
-
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                return false;
-            }
-        });
         return view;
     }
 
@@ -94,43 +120,4 @@ public class HomeListFragment extends Fragment implements CardViewAdapter.PostCl
     public void PostClicked(View v, int position) {
 
     }
-
-    private class loadDiscoverList extends AsyncTask<Uri, String, DiscoverData> {
-        Context context;
-        int loadId;
-
-        loadDiscoverList(Context context, int loadId) {
-            this.context = context;
-            this.loadId = loadId;
-
-
-        }
-
-        @Override
-        protected void onPostExecute(DiscoverData discoverData) {
-            super.onPostExecute(discoverData);
-            if (discoverData != null) {
-                list = discoverData.getResults();
-                if (loadId == 1){
-                    mHomePopularImagePagerAdapter = new HomePopularImagePagerAdapter(context, list);
-                    mostPopularList.setAdapter(mHomePopularImagePagerAdapter);
-                }else {
-                    mCardViewAdapter = new CardViewAdapter(context, list, HomeListFragment.this);
-                    RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
-                    nowPlayingView.setLayoutManager(layoutManager);
-                    nowPlayingView.setAdapter(mCardViewAdapter);
-                }
-            }
-        }
-
-        @Override
-        protected DiscoverData doInBackground(Uri... uris) {
-
-            return MovieSyncTask.DiscoverMovies(context, uris[0]);
-        }
-
-
-    }
-
-
 }
