@@ -64,6 +64,8 @@ public class HomePopularImagePagerAdapter extends PagerAdapter {
         Picasso.with(context).load(backdropImageUrl).into(backdropView);
         movieTitleView.setText(data.getTitle());
         movieDescriptionView.setText(data.getOverview());
+
+        container.addView(view);
         return view;
     }
 }

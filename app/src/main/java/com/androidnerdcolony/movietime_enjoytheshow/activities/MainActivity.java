@@ -42,18 +42,34 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager();
         tabLayout.setupWithViewPager(mViewPager);
 
-        Log.d("testing", "something testing for log");
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     public void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomeListFragment(),getString(R.string.home));
-        adapter.addFragment(new MovieListFragment(), getString(R.string.movies));
+        adapter.addFragment(new MovieListFragment(),getString(R.string.movies));
         adapter.addFragment(new TvListFragment(), getString(R.string.path_tv));
         mViewPager.setAdapter(adapter);
 
     }
-    private class ViewPagerAdapter extends FragmentPagerAdapter{
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
@@ -64,20 +80,21 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            Log.d("position","postion = " + position);
+
             return mFragmentList.get(position);
         }
+            @Override
+            public int getCount () {
+                return mFragmentList.size();
+            }
 
-        @Override
-        public int getCount() {
-            return mFragmentTitleList.size();
-        }
-        void addFragment(Fragment fragment, String title){
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
-
         @Override
-        public CharSequence getPageTitle(int position){
+        public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
     }

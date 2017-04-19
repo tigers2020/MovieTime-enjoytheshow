@@ -1,14 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
 
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Second Tab"
+        android:text="Third Tab"
         android:textSize="20sp"
         android:id="@+id/text_top"
         android:textAppearance="?android:textAppearanceMedium"
@@ -20,8 +21,8 @@
         android:id="@+id/progressBar"
         android:layout_centerInParent="true"/>
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/text_top"
         android:id="@+id/recycle_now_playing"
+        android:layout_below="@id/text_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </RelativeLayout>

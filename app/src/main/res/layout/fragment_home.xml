@@ -4,6 +4,14 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="First Tab"
+        android:textSize="20sp"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:gravity="center"/>
+
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:id="@+id/most_popular_list"

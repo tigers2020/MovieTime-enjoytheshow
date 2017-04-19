@@ -14,11 +14,10 @@ public interface ApiEndpointInterface {
 
     @GET("3/discover/movie")
     Call<DiscoverData> getDiscoverMovie(
-            @Query("api_key") String api_key,
             @Query("sort_by") String sort_by);
 
     @GET("3/discover/tv")
     Call<DiscoverData> getDiscoverTv(
-      @Query("api_key") String api_key,
       @Query("sort_by") String sort_by);
+
 }
