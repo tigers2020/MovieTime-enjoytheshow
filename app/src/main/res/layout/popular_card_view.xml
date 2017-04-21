@@ -3,20 +3,24 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="test text for the adapter"
-        android:textSize="16sp"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@color/colorPrimary"
-        android:gravity="center"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
         android:id="@+id/backdrop"
         android:contentDescription="@string/movie_backdrop_image"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        android:padding="8dp"
+        android:maxLines="3"
+        android:layout_marginBottom="-36dp"
+        android:text="description"
+        android:ellipsize="middle"
+        android:layout_alignBottom="@id/backdrop"
+        android:id="@+id/movie_description"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,19 +33,8 @@
         android:textColor="@android:color/white"
         android:textAppearance="?android:textAppearanceMedium"
         android:text="movie title"
-        android:layout_alignBottom="@id/backdrop"
+        android:layout_above="@id/movie_description"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
-        android:padding="8dp"
-        android:maxLines="3"
-        android:text="description"
-        android:ellipsize="middle"
-        android:layout_below="@id/backdrop"
-        android:id="@+id/movie_description"/>
 
 </RelativeLayout>

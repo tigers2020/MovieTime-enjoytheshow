@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
-import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
 import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
 import com.squareup.picasso.Picasso;
 
@@ -26,9 +26,9 @@ import butterknife.ButterKnife;
 public class HomePopularImagePagerAdapter extends PagerAdapter {
 
     private Context context;
-    private List<DiscoverData.ResultsBean> list;
-    private LayoutInflater layoutInflater;
-    public HomePopularImagePagerAdapter(Context context, List<DiscoverData.ResultsBean> list) {
+    private final List<DiscoverMovieData.ResultsBean> list;
+
+    public HomePopularImagePagerAdapter(Context context, List<DiscoverMovieData.ResultsBean> list) {
         this.context = context;
         this.list = list;
     }
@@ -56,8 +56,8 @@ public class HomePopularImagePagerAdapter extends PagerAdapter {
     TextView movieDescriptionView;
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        DiscoverData.ResultsBean data = list.get(position);
-        layoutInflater =  (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        DiscoverMovieData.ResultsBean data = list.get(position);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.popular_card_view, container, false);
         ButterKnife.bind(this, view);
         String backdropImageUrl = ApiUtils.getImageUrl(data.getBackdrop_path());

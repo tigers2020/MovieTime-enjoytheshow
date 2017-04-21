@@ -6,7 +6,7 @@ import java.util.List;
  * Created by tiger on 4/9/2017.
  */
 
-public class DiscoverData {
+public class DiscoverMovieData {
 
     /**
      * page : 1

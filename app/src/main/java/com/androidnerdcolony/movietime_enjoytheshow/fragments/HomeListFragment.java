@@ -3,7 +3,6 @@ package com.androidnerdcolony.movietime_enjoytheshow.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,8 +11,7 @@ import android.view.ViewGroup;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
-import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.HomePopularImagePagerAdapter;
-import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +29,13 @@ import retrofit2.Response;
 
 public class HomeListFragment extends BaseFragment implements CardViewAdapter.PostClickListener {
 
-    @BindView(R.id.recycle_now_playing)
+    @BindView(R.id.recycle_popular_playing)
     RecyclerView nowPlayingView;
-    @BindView(R.id.most_popular_list)
-    ViewPager mostPopularList;
     CardViewAdapter mCardViewAdapter;
-    HomePopularImagePagerAdapter mHomePopularImagePagerAdapter;
-    List<DiscoverData.ResultsBean> list = new ArrayList<>();
+    List<DiscoverMovieData.ResultsBean> list = new ArrayList<>();
     private Context context;
     private Unbinder mUnbinder;
-    Call<DiscoverData> call;
+    Call<DiscoverMovieData> call;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,16 +43,12 @@ public class HomeListFragment extends BaseFragment implements CardViewAdapter.Po
         context = getContext();
     }
 
-    private void loadDataIntoAdapter(DiscoverData data) {
+    private void loadDataIntoAdapter(DiscoverMovieData data) {
         list = data.getResults();
 
-        if (mHomePopularImagePagerAdapter == null) {
-            mHomePopularImagePagerAdapter = new HomePopularImagePagerAdapter(context, list);
-        }
         if (mCardViewAdapter == null){
             mCardViewAdapter = new CardViewAdapter(context, list, HomeListFragment.this);
         }
-        mostPopularList.setAdapter(mHomePopularImagePagerAdapter);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
         nowPlayingView.setLayoutManager(layoutManager);
         nowPlayingView.setAdapter(mCardViewAdapter);
@@ -70,22 +61,21 @@ public class HomeListFragment extends BaseFragment implements CardViewAdapter.Po
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        call = loadData(0);
-        call.enqueue(new Callback<DiscoverData>() {
+        call = loadMovieData();
+        call.enqueue(new Callback<DiscoverMovieData>() {
             @Override
-            public void onResponse(Call<DiscoverData> call, Response<DiscoverData> response) {
+            public void onResponse(Call<DiscoverMovieData> call, Response<DiscoverMovieData> response) {
                 loadDataIntoAdapter(response.body());
             }
 
             @Override
-            public void onFailure(Call<DiscoverData> call, Throwable t) {
+            public void onFailure(Call<DiscoverMovieData> call, Throwable t) {
 
             }
         });
 
         return view;
     }
-
 
 
     @Override

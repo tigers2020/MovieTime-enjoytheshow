@@ -1,10 +1,14 @@
 package com.androidnerdcolony.movietime_enjoytheshow.util;
 
-import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.ConfigurationData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverTvData;
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by tiger on 4/15/2017.
@@ -13,11 +17,19 @@ import retrofit2.http.Query;
 public interface ApiEndpointInterface {
 
     @GET("3/discover/movie")
-    Call<DiscoverData> getDiscoverMovie(
-            @Query("sort_by") String sort_by);
+    Call<DiscoverMovieData> getDiscoverMovie(
+            @QueryMap Map<String, String> options);
+
+    @GET("3/discover/movie")
+    Call<DiscoverMovieData> getDiscoverMovieNowPlaying(
+            @QueryMap Map<String, String> options);
 
     @GET("3/discover/tv")
-    Call<DiscoverData> getDiscoverTv(
-      @Query("sort_by") String sort_by);
+    Call<DiscoverTvData> getDiscoverTv(
+            @QueryMap Map<String, String> options);
+
+    @GET("3/configuration")
+    Call<ConfigurationData> getConfiguration();
+
 
 }

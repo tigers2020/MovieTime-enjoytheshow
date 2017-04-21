@@ -1,5 +1,6 @@
 package com.androidnerdcolony.movietime_enjoytheshow.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.HomeListFragment;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.MovieListFragment;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.TvListFragment;
+import com.androidnerdcolony.movietime_enjoytheshow.util.MoviePreferenceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +33,37 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.pager)
     ViewPager mViewPager;
 
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        context = this;
+
         setSupportActionBar(toolbar);
+        checkingFreshInstall();
 
         setupViewPager();
+    }
+
+    private void checkingFreshInstall() {
+        boolean isFresh = MoviePreferenceManager.isFresh(context);
+
+        if (isFresh){
+            MoviePreferenceManager.setDefaultPreference(context);
+        }
+    }
+
+    public void setupViewPager() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new HomeListFragment(),getString(R.string.now_playing));
+        adapter.addFragment(new MovieListFragment(),getString(R.string.movies));
+        adapter.addFragment(new TvListFragment(), getString(R.string.path_tv));
+        mViewPager.setAdapter(adapter);
+        mViewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(mViewPager);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -58,14 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    public void setupViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeListFragment(),getString(R.string.home));
-        adapter.addFragment(new MovieListFragment(),getString(R.string.movies));
-        adapter.addFragment(new TvListFragment(), getString(R.string.path_tv));
-        mViewPager.setAdapter(adapter);
 
     }
 

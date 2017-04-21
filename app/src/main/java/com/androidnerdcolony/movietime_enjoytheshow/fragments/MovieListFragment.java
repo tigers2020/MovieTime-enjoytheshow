@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.activities.DetailActivity;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
-import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
 import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
 
 import java.util.ArrayList;
@@ -35,12 +35,12 @@ import retrofit2.Callback;
 
 public class MovieListFragment extends BaseFragment implements CardViewAdapter.PostClickListener {
 
-    @BindView(R.id.recycle_now_playing)
+    @BindView(R.id.recycle_movie_playing)
     RecyclerView nowPlayingView;
     @BindView(R.id.progressBar)
     ProgressBar loadingBar;
     CardViewAdapter mCardViewAdapter;
-    List<DiscoverData.ResultsBean> list = new ArrayList<>();
+    List<DiscoverMovieData.ResultsBean> list = new ArrayList<>();
     private Context context;
     private Unbinder mUnbinder;
     Bundle args;
@@ -69,22 +69,22 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         loadingBar.setVisibility(View.VISIBLE);
-        Call<DiscoverData> call = loadData(1);
+        Call<DiscoverMovieData> call = loadMovieData();
 
-        call.enqueue(new Callback<DiscoverData>() {
+        call.enqueue(new Callback<DiscoverMovieData>() {
             @Override
-            public void onResponse(Call<DiscoverData> call, retrofit2.Response<DiscoverData> response) {
+            public void onResponse(Call<DiscoverMovieData> call, retrofit2.Response<DiscoverMovieData> response) {
                 Log.d("MainRetrifot", "onResponse: " + response.code());
 
                 if (response.isSuccessful()) {
-                    DiscoverData data = response.body();
+                    DiscoverMovieData data = response.body();
                     list = data.getResults();
                     loadDataIntoAdapter();
                 }
             }
 
             @Override
-            public void onFailure(Call<DiscoverData> call, Throwable t) {
+            public void onFailure(Call<DiscoverMovieData> call, Throwable t) {
 
             }
         });
@@ -99,7 +99,7 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
 
     @Override
     public void PostClicked(View v, int position) {
-        DiscoverData.ResultsBean data = list.get(position);
+        DiscoverMovieData.ResultsBean data = list.get(position);
         int movieId = data.getId();
         Uri uri = ApiUtils.getMovieDetailUri(context, movieId);
         Toast.makeText(context, "poster clicked : " + movieId + "\n" + data.getTitle(), Toast.LENGTH_SHORT).show();

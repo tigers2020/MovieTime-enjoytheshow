@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
-import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
-import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
+import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.TvViewAdapter;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverTvData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +28,14 @@ import retrofit2.Callback;
  * Created by tiger on 4/9/2017.
  */
 
-public class TvListFragment extends BaseFragment implements CardViewAdapter.PostClickListener{
+public class TvListFragment extends BaseFragment implements TvViewAdapter.PostClickListener{
 
-    @BindView(R.id.recycle_now_playing)
+    @BindView(R.id.recycle_tv_playing)
     RecyclerView nowPlayingView;
     @BindView(R.id.progressBar)
     ProgressBar loadingBar;
-    CardViewAdapter mCardViewAdapter;
-    List<DiscoverData.ResultsBean> list = new ArrayList<>();
+    TvViewAdapter mCardViewAdapter;
+    private List<DiscoverTvData.ResultsBean> list = new ArrayList<>();
     private Context context;
     private Unbinder mUnbinder;
 
@@ -47,7 +47,7 @@ public class TvListFragment extends BaseFragment implements CardViewAdapter.Post
 
     private void loadDataIntoAdapter() {
         if (mCardViewAdapter == null){
-            mCardViewAdapter = new CardViewAdapter(context, list, TvListFragment.this);
+            mCardViewAdapter = new TvViewAdapter(context, list, TvListFragment.this);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
             nowPlayingView.setLayoutManager(layoutManager);
 
@@ -62,27 +62,28 @@ public class TvListFragment extends BaseFragment implements CardViewAdapter.Post
         View view = inflater.inflate(R.layout.fragment_tv_list, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         loadingBar.setVisibility(View.VISIBLE);
-        Call<DiscoverData> call = loadData(2);
+        Call<DiscoverTvData> call = loadTvData();
 
-        call.enqueue(new Callback<DiscoverData>() {
+        call.enqueue(new Callback<DiscoverTvData>() {
             @Override
-            public void onResponse(Call<DiscoverData> call, retrofit2.Response<DiscoverData> response) {
+            public void onResponse(Call<DiscoverTvData> call, retrofit2.Response<DiscoverTvData> response) {
                 Log.d("MainRetrifot", "onResponse: " + response.code());
 
                 if (response.isSuccessful()) {
-                    DiscoverData data = response.body();
+                    DiscoverTvData data = response.body();
                     list = data.getResults();
                     loadDataIntoAdapter();
                 }
             }
 
             @Override
-            public void onFailure(Call<DiscoverData> call, Throwable t) {
+            public void onFailure(Call<DiscoverTvData> call, Throwable t) {
 
             }
         });
         return view;
     }
+
 
     @Override
     public void onDestroyView() {

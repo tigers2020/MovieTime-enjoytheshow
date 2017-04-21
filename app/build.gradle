@@ -19,6 +19,7 @@ android {
     }
     buildTypes.each {
         it.buildConfigField("String", "API_KEY", MyPopularMoviesApiKey)
+        it.buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/\"")
     }
 }
 

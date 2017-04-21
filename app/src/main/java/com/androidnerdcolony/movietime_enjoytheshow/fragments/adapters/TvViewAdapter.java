@@ -2,7 +2,6 @@ package com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
-import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverTvData;
 import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
 import com.squareup.picasso.Picasso;
 
@@ -19,52 +18,54 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.androidnerdcolony.movietime_enjoytheshow.R.id.poster;
-
 /**
- * Created by tiger on 4/9/2017.
+ * Created by tiger on 4/19/2017.
  */
 
-public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHolder> {
-    private Context context;
+public class TvViewAdapter extends RecyclerView.Adapter<TvViewAdapter.ViewHolder> {
+
+    Context context;
+    List<DiscoverTvData.ResultsBean> list;
     private static PostClickListener postClickListener;
-    private final List<DiscoverMovieData.ResultsBean> mDiscoverDataList;
 
     public interface PostClickListener{
         public void PostClicked(View v, int position);
     }
-
-    public CardViewAdapter(Context context, List<DiscoverMovieData.ResultsBean> discoverDataList, PostClickListener postClickListener){
-
+    public TvViewAdapter(Context context, List<DiscoverTvData.ResultsBean> list, PostClickListener postClickListener){
         this.context = context;
-        CardViewAdapter.postClickListener = postClickListener;
-        mDiscoverDataList = discoverDataList;
+        this.list = list;
+        this.postClickListener = postClickListener;
 
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_card_view, parent, false);
         ViewHolder vh = new ViewHolder(view);
+
+
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        DiscoverMovieData.ResultsBean discover = mDiscoverDataList.get(position);
-        String posterUrl = ApiUtils.getImageUrl(discover.getPoster_path());
-
+        DiscoverTvData.ResultsBean data = list.get(position);
+        String posterUrl = ApiUtils.getImageUrl(data.getPoster_path());
         Picasso.with(context).load(posterUrl).error(R.drawable.ic_powered_by_square_blue).into(holder.posterView);
-        holder.titleView.setText(discover.getTitle());
-        holder.releaseDateView.setText(discover.getRelease_date());
+        holder.titleView.setText(data.getName());
+        holder.releaseDateView.setText(data.getFirst_air_date());
+
+
+
     }
 
     @Override
     public int getItemCount() {
-        return mDiscoverDataList.size();
+        return list.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(poster)
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.poster)
         ImageView posterView;
         @BindView(R.id.movie_title)
         TextView titleView;
@@ -73,16 +74,12 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-
-
         }
 
         @Override
         public void onClick(View view) {
-
-            Log.d("CardView: ", String.valueOf(titleView.getText()));
             postClickListener.PostClicked(view, this.getLayoutPosition());
+
         }
     }
 }

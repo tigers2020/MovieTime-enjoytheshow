@@ -3,7 +3,7 @@ package com.androidnerdcolony.movietime_enjoytheshow.sync;
 import android.content.Context;
 import android.net.Uri;
 
-import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
 import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
 import com.google.gson.Gson;
 
@@ -18,7 +18,7 @@ import timber.log.Timber;
 
 public class MovieSyncTask {
 
-    public static DiscoverData DiscoverMovies(Context context, Uri uri) {
+    public static DiscoverMovieData DiscoverMovies(Context context, Uri uri) {
             if (uri == null){
                 Timber.e("Uri is Null");
                 return null;
@@ -27,7 +27,7 @@ public class MovieSyncTask {
             URL discoverUrl = new URL(uri.toString());
             String jsonMovieResponse = ApiUtils.getResponseFromHttpUrl(discoverUrl);
             Gson gson = new Gson();
-            return gson.fromJson(jsonMovieResponse, DiscoverData.class);
+            return gson.fromJson(jsonMovieResponse, DiscoverMovieData.class);
 
         } catch (IOException e) {
             e.printStackTrace();
