@@ -2,12 +2,10 @@ package com.androidnerdcolony.movietime_enjoytheshow.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.activities.DetailActivity;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
-import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,11 +71,8 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
         call.enqueue(new Callback<DiscoverMovieData>() {
             @Override
             public void onResponse(Call<DiscoverMovieData> call, retrofit2.Response<DiscoverMovieData> response) {
-                Log.d("MainRetrifot", "onResponse: " + response.code());
-
                 if (response.isSuccessful()) {
-                    DiscoverMovieData data = response.body();
-                    list = data.getResults();
+                    list = response.body().getResults();
                     loadDataIntoAdapter();
                 }
             }
@@ -101,12 +95,9 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
     public void PostClicked(View v, int position) {
         DiscoverMovieData.ResultsBean data = list.get(position);
         int movieId = data.getId();
-        Uri uri = ApiUtils.getMovieDetailUri(context, movieId);
         Toast.makeText(context, "poster clicked : " + movieId + "\n" + data.getTitle(), Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(context, DetailActivity.class);
-
-        intent.putExtra("uri", uri.toString());
+        intent.putExtra("movieId", movieId);
         startActivity(intent);
 
     }

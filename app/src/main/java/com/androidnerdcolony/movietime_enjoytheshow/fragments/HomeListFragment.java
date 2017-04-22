@@ -1,6 +1,7 @@
 package com.androidnerdcolony.movietime_enjoytheshow.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
+import com.androidnerdcolony.movietime_enjoytheshow.activities.DetailActivity;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
 
@@ -86,6 +89,11 @@ public class HomeListFragment extends BaseFragment implements CardViewAdapter.Po
 
     @Override
     public void PostClicked(View v, int position) {
-
+        DiscoverMovieData.ResultsBean data = list.get(position);
+        int movieId = data.getId();
+        Toast.makeText(context, "poster clicked : " + movieId + "\n" + data.getTitle(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context, DetailActivity.class);
+        intent.putExtra("movieId", movieId);
+        startActivity(intent);
     }
 }

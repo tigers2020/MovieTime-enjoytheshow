@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverTvData;
-import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
+import com.androidnerdcolony.movietime_enjoytheshow.util.MoviePreferenceManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -50,7 +50,13 @@ public class TvViewAdapter extends RecyclerView.Adapter<TvViewAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         DiscoverTvData.ResultsBean data = list.get(position);
-        String posterUrl = ApiUtils.getImageUrl(data.getPoster_path());
+
+        List<String> posterSize = MoviePreferenceManager.getPosterSize(context);
+
+
+        String posterUrl = MoviePreferenceManager.getImageSecureBaseUrl(context)
+                + posterSize.get(4)
+                + data.getPoster_path();
         Picasso.with(context).load(posterUrl).error(R.drawable.ic_powered_by_square_blue).into(holder.posterView);
         holder.titleView.setText(data.getName());
         holder.releaseDateView.setText(data.getFirst_air_date());

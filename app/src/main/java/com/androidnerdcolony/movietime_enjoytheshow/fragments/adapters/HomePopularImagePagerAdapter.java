@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
-import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
+import com.androidnerdcolony.movietime_enjoytheshow.util.MoviePreferenceManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -60,7 +60,12 @@ public class HomePopularImagePagerAdapter extends PagerAdapter {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.popular_card_view, container, false);
         ButterKnife.bind(this, view);
-        String backdropImageUrl = ApiUtils.getImageUrl(data.getBackdrop_path());
+
+        List<String> list = MoviePreferenceManager.getBackdropSize(context);
+
+        String backdropImageUrl = MoviePreferenceManager.getImageSecureBaseUrl(context)
+                + list.get(4)
+                + data.getBackdrop_path();
         Picasso.with(context).load(backdropImageUrl).into(backdropView);
         movieTitleView.setText(data.getTitle());
         movieDescriptionView.setText(data.getOverview());

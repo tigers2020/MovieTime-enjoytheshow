@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
-import com.androidnerdcolony.movietime_enjoytheshow.util.ApiUtils;
+import com.androidnerdcolony.movietime_enjoytheshow.util.MoviePreferenceManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -50,9 +50,16 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        DiscoverMovieData.ResultsBean discover = mDiscoverDataList.get(position);
-        String posterUrl = ApiUtils.getImageUrl(discover.getPoster_path());
+        List<String> posterSizeList = MoviePreferenceManager.getPosterSize(context);
 
+        DiscoverMovieData.ResultsBean discover = mDiscoverDataList.get(position);
+
+        holder.itemView.setTag(discover.getId());
+        String posterUrl = MoviePreferenceManager.getImageSecureBaseUrl(context)
+                + posterSizeList.get(0)
+                + discover.getPoster_path();
+        Log.d("image_Url", "imageUrl = " + posterUrl
+        );
         Picasso.with(context).load(posterUrl).error(R.drawable.ic_powered_by_square_blue).into(holder.posterView);
         holder.titleView.setText(discover.getTitle());
         holder.releaseDateView.setText(discover.getRelease_date());
