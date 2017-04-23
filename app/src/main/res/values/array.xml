@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feature">
+        <item>featured</item>
+        <item>popularity.asc</item>
+        <item>popularity.desc</item>
+        <item>release_date.asc</item>
+        <item>release_date.desc</item>
+        <item>revenue.asc</item>
+        <item>revenue.desc</item>
+        <item>primary_release_date.asc</item>
+        <item>primary_release_date.desc</item>
+        <item>original_title.asc</item>
+        <item>original_title.desc</item>
+        <item>vote_average.asc</item>
+        <item>vote_average.desc</item>
+        <item>vote_count.asc</item>
+        <item>vote_count.desc</item>
+    </string-array>
+</resources>

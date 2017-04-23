@@ -28,7 +28,7 @@ import static com.androidnerdcolony.movietime_enjoytheshow.R.id.poster;
 public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHolder> {
     private Context context;
     private static PostClickListener postClickListener;
-    private final List<DiscoverMovieData.ResultsBean> mDiscoverDataList;
+    private List<DiscoverMovieData.ResultsBean> mDiscoverDataList;
 
     public interface PostClickListener{
         public void PostClicked(View v, int position);
@@ -51,15 +51,10 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         List<String> posterSizeList = MoviePreferenceManager.getPosterSize(context);
-
         DiscoverMovieData.ResultsBean discover = mDiscoverDataList.get(position);
-
-        holder.itemView.setTag(discover.getId());
         String posterUrl = MoviePreferenceManager.getImageSecureBaseUrl(context)
-                + posterSizeList.get(0)
+                + posterSizeList.get(3)
                 + discover.getPoster_path();
-        Log.d("image_Url", "imageUrl = " + posterUrl
-        );
         Picasso.with(context).load(posterUrl).error(R.drawable.ic_powered_by_square_blue).into(holder.posterView);
         holder.titleView.setText(discover.getTitle());
         holder.releaseDateView.setText(discover.getRelease_date());
@@ -91,5 +86,11 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
             Log.d("CardView: ", String.valueOf(titleView.getText()));
             postClickListener.PostClicked(view, this.getLayoutPosition());
         }
+    }
+
+    public void listDataChanged(List<DiscoverMovieData.ResultsBean> mDiscoverDataList)
+    {
+        this.mDiscoverDataList = mDiscoverDataList;
+
     }
 }

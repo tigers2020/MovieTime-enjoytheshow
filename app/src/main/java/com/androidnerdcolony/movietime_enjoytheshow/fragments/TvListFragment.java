@@ -17,6 +17,7 @@ import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.activities.DetailActivity;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.TvViewAdapter;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverTvData;
+import com.androidnerdcolony.movietime_enjoytheshow.util.NetworkManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
         View view = inflater.inflate(R.layout.fragment_tv_list, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         loadingBar.setVisibility(View.VISIBLE);
-        Call<DiscoverTvData> call = loadTvData();
+        Call<DiscoverTvData> call = NetworkManager.loadTvData(context, NetworkManager.getDefaultQuery(context));
 
         call.enqueue(new Callback<DiscoverTvData>() {
             @Override

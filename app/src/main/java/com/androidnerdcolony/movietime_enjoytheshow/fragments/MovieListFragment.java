@@ -16,6 +16,7 @@ import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.activities.DetailActivity;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
+import com.androidnerdcolony.movietime_enjoytheshow.util.NetworkManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +55,9 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
             mCardViewAdapter = new CardViewAdapter(context, list, MovieListFragment.this);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
             nowPlayingView.setLayoutManager(layoutManager);
-
             nowPlayingView.setAdapter(mCardViewAdapter);
+        }else{
+            mCardViewAdapter.listDataChanged(list);
         }
         loadingBar.setVisibility(View.GONE);
     }
@@ -66,7 +68,7 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         loadingBar.setVisibility(View.VISIBLE);
-        Call<DiscoverMovieData> call = loadMovieData();
+        Call<DiscoverMovieData> call = NetworkManager.loadMovieData(context, NetworkManager.getDefaultQuery(context));
 
         call.enqueue(new Callback<DiscoverMovieData>() {
             @Override

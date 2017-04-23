@@ -6,6 +6,7 @@ import android.util.Log;
 import com.androidnerdcolony.movietime_enjoytheshow.BuildConfig;
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
+import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverTvData;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -22,6 +23,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -84,5 +86,14 @@ public class NetworkManager {
         map.put(context.getString(R.string.page), "1");
 
         return map;
+    }
+
+    public static Call<DiscoverMovieData> loadMovieData(Context context, Map<String, String> query) {
+        return getService().getDiscoverMovie(query);
+
+    }
+    public static Call<DiscoverTvData> loadTvData(Context context, Map<String, String> query) {
+        return getService().getDiscoverTv(query);
+
     }
 }

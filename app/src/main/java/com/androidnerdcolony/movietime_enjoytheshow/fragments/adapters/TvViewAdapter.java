@@ -55,7 +55,7 @@ public class TvViewAdapter extends RecyclerView.Adapter<TvViewAdapter.ViewHolder
 
 
         String posterUrl = MoviePreferenceManager.getImageSecureBaseUrl(context)
-                + posterSize.get(4)
+                + posterSize.get(3)
                 + data.getPoster_path();
         Picasso.with(context).load(posterUrl).error(R.drawable.ic_powered_by_square_blue).into(holder.posterView);
         holder.titleView.setText(data.getName());

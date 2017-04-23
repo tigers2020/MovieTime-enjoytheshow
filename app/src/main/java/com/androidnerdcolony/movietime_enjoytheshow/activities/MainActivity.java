@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
-import com.androidnerdcolony.movietime_enjoytheshow.fragments.HomeListFragment;
+import com.androidnerdcolony.movietime_enjoytheshow.fragments.NowPlayingListFragment;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.MovieListFragment;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.TvListFragment;
 import com.androidnerdcolony.movietime_enjoytheshow.util.MoviePreferenceManager;
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeListFragment(),getString(R.string.now_playing));
+        adapter.addFragment(new NowPlayingListFragment(),getString(R.string.now_playing));
         adapter.addFragment(new MovieListFragment(),getString(R.string.movies));
         adapter.addFragment(new TvListFragment(), getString(R.string.path_tv));
         mViewPager.setAdapter(adapter);

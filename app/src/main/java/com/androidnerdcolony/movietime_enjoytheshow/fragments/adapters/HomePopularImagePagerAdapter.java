@@ -64,7 +64,7 @@ public class HomePopularImagePagerAdapter extends PagerAdapter {
         List<String> list = MoviePreferenceManager.getBackdropSize(context);
 
         String backdropImageUrl = MoviePreferenceManager.getImageSecureBaseUrl(context)
-                + list.get(4)
+                + list.get(3)
                 + data.getBackdrop_path();
         Picasso.with(context).load(backdropImageUrl).into(backdropView);
         movieTitleView.setText(data.getTitle());

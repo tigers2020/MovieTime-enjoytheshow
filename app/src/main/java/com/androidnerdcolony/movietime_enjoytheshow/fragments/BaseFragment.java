@@ -14,12 +14,5 @@ import retrofit2.Call;
 
 public class BaseFragment extends Fragment {
 
-    Call<DiscoverMovieData> loadMovieData() {
-        return NetworkManager.getService().getDiscoverMovie(NetworkManager.getDefaultQuery(getContext()));
 
-    }
-    Call<DiscoverTvData> loadTvData() {
-        return NetworkManager.getService().getDiscoverTv(NetworkManager.getDefaultQuery(getContext()));
-
-    }
 }
