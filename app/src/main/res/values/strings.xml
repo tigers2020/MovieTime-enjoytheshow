@@ -123,4 +123,6 @@
     <string name="still_size">still_size</string>
     <string name="image_secure_base_url">image_secure_base_url</string>
     <string name="movie_id">movie_id</string>
+    <string name="timezone">timezone</string>
+    <string name="include_null_first_air_dates">include_null_first_air_dates</string>
 </resources>

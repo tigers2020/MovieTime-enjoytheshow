@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,8 +38,10 @@ import retrofit2.Response;
 
 public class NowPlayingListFragment extends BaseFragment implements CardViewAdapter.PostClickListener {
 
-    @BindView(R.id.recycle_popular_playing)
+    @BindView(R.id.recycle_list)
     RecyclerView nowPlayingView;
+    @BindView(R.id.progressBar)
+    ProgressBar loadingBar;
     @BindView(R.id.feature_spinner)
     Spinner feature_spinner;
 
@@ -60,12 +63,14 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
 
         if (mCardViewAdapter == null) {
             mCardViewAdapter = new CardViewAdapter(context, list, NowPlayingListFragment.this);
-        }else{
+        } else {
             mCardViewAdapter.listDataChanged(list);
         }
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
         nowPlayingView.setLayoutManager(layoutManager);
         nowPlayingView.setAdapter(mCardViewAdapter);
+
+        loadingBar.setVisibility(View.GONE);
 
     }
 
@@ -75,22 +80,24 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         mUnbinder = ButterKnife.bind(this, view);
+        loadingBar.setVisibility(View.VISIBLE);
+
 
         String[] featureArray = getResources().getStringArray(R.array.feature);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, featureArray);
         feature_spinner.setAdapter(adapter);
         query = NetworkManager.getDefaultQuery(context);
         callingData();
-
         feature_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
                 Toast.makeText(adapterView.getContext(), "Selected Feature : " + item, Toast.LENGTH_SHORT).show();
-                if (i == 0){
+                if (i == 0) {
                     return;
                 }
                 query.put(context.getString(R.string.sort_by), item);
+                loadingBar.setVisibility(View.VISIBLE);
                 callingData();
             }
 

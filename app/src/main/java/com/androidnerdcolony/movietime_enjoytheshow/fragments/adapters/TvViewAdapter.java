@@ -57,14 +57,20 @@ public class TvViewAdapter extends RecyclerView.Adapter<TvViewAdapter.ViewHolder
         String posterUrl = MoviePreferenceManager.getImageSecureBaseUrl(context)
                 + posterSize.get(3)
                 + data.getPoster_path();
-        Picasso.with(context).load(posterUrl).error(R.drawable.ic_powered_by_square_blue).into(holder.posterView);
+        Picasso.with(context).load(posterUrl).placeholder(R.drawable.no_poster_found).error(R.drawable.no_poster_found).into(holder.posterView);
         holder.titleView.setText(data.getName());
         holder.releaseDateView.setText(data.getFirst_air_date());
 
 
 
     }
+    public void listDataChanged(List<DiscoverTvData.ResultsBean> list)
+    {
+        this.list.clear();
+        this.list = list;
+        notifyDataSetChanged();
 
+    }
     @Override
     public int getItemCount() {
         return list.size();

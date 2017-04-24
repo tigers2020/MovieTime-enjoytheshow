@@ -10,9 +10,10 @@
     <ImageView
         android:id="@+id/poster"
         android:layout_width="114dp"
-        android:layout_height="wrap_content"
+        android:layout_height="165dp"
         android:adjustViewBounds="false"
         android:cropToPadding="false"
+        android:scaleType="centerCrop"
         app:layout_constraintHorizontal_bias="1"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp"

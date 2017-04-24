@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static com.androidnerdcolony.movietime_enjoytheshow.R.id.poster;
 
@@ -55,7 +56,9 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
         String posterUrl = MoviePreferenceManager.getImageSecureBaseUrl(context)
                 + posterSizeList.get(3)
                 + discover.getPoster_path();
-        Picasso.with(context).load(posterUrl).error(R.drawable.ic_powered_by_square_blue).into(holder.posterView);
+
+        Timber.d("posterUrl = " + posterUrl);
+        Picasso.with(context).load(posterUrl).placeholder(R.drawable.no_poster_found).error(R.drawable.no_poster_found).into(holder.posterView);
         holder.titleView.setText(discover.getTitle());
         holder.releaseDateView.setText(discover.getRelease_date());
     }
@@ -90,7 +93,9 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
 
     public void listDataChanged(List<DiscoverMovieData.ResultsBean> mDiscoverDataList)
     {
+        this.mDiscoverDataList.clear();
         this.mDiscoverDataList = mDiscoverDataList;
+        notifyDataSetChanged();
 
     }
 }

@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -218,4 +219,9 @@ public class MoviePreferenceManager {
     }
 
 
+    public static String getTimezone(Context context) {
+        TimeZone tz = TimeZone.getDefault();
+        String tzString = tz.getID();
+        return tzString;
+    }
 }

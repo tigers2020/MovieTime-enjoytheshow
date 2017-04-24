@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
@@ -21,12 +23,15 @@ import com.androidnerdcolony.movietime_enjoytheshow.util.NetworkManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Created by tiger on 4/9/2017.
@@ -34,11 +39,15 @@ import retrofit2.Callback;
 
 public class TvListFragment extends BaseFragment implements TvViewAdapter.PostClickListener{
 
-    @BindView(R.id.recycle_tv_playing)
+    @BindView(R.id.recycle_list)
     RecyclerView nowPlayingView;
     @BindView(R.id.progressBar)
     ProgressBar loadingBar;
+    @BindView(R.id.feature_spinner)
+    Spinner feature_spinner;
     TvViewAdapter mCardViewAdapter;
+    Map<String, String> query;
+    Call<DiscoverTvData> call;
     private List<DiscoverTvData.ResultsBean> list = new ArrayList<>();
     private Context context;
     private Unbinder mUnbinder;
@@ -49,13 +58,16 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
         context = getContext();
     }
 
-    private void loadDataIntoAdapter() {
+    private void loadDataIntoAdapter(DiscoverTvData body) {
+        list = body.getResults();
         if (mCardViewAdapter == null){
             mCardViewAdapter = new TvViewAdapter(context, list, TvListFragment.this);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
             nowPlayingView.setLayoutManager(layoutManager);
 
             nowPlayingView.setAdapter(mCardViewAdapter);
+        }else{
+            mCardViewAdapter.listDataChanged(list);
         }
         loadingBar.setVisibility(View.GONE);
     }
@@ -63,29 +75,48 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tv_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         loadingBar.setVisibility(View.VISIBLE);
-        Call<DiscoverTvData> call = NetworkManager.loadTvData(context, NetworkManager.getDefaultQuery(context));
-
-        call.enqueue(new Callback<DiscoverTvData>() {
+        String[] featureArray = getResources().getStringArray(R.array.feature);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, featureArray);
+        feature_spinner.setAdapter(adapter);
+        query = NetworkManager.getDefaultTvQuery(context);
+        callingData();
+        feature_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onResponse(Call<DiscoverTvData> call, retrofit2.Response<DiscoverTvData> response) {
-                Log.d("MainRetrifot", "onResponse: " + response.code());
-
-                if (response.isSuccessful()) {
-                    DiscoverTvData data = response.body();
-                    list = data.getResults();
-                    loadDataIntoAdapter();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = adapterView.getItemAtPosition(i).toString();
+                Toast.makeText(adapterView.getContext(), "Selected Feature : " + item, Toast.LENGTH_SHORT).show();
+                if (i == 0) {
+                    return;
                 }
+                query.put(context.getString(R.string.sort_by), item);
+                loadingBar.setVisibility(View.VISIBLE);
+                callingData();
             }
 
             @Override
-            public void onFailure(Call<DiscoverTvData> call, Throwable t) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
         return view;
+    }
+    private void callingData() {
+        call = NetworkManager.loadTvData(context, query);
+        call.enqueue(new Callback<DiscoverTvData>() {
+            @Override
+            public void onResponse(Call<DiscoverTvData> call, Response<DiscoverTvData> response) {
+                loadDataIntoAdapter(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<DiscoverTvData> call, Throwable t) {
+                Timber.d("tv loading failed");
+
+            }
+        });
     }
 
 
