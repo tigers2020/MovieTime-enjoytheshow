@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.activities.DetailActivity;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
+import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.ScrollListener;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
 import com.androidnerdcolony.movietime_enjoytheshow.util.NetworkManager;
 
@@ -31,6 +33,7 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Created by tiger on 4/9/2017.
@@ -50,6 +53,8 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
     List<DiscoverMovieData.ResultsBean> list = new ArrayList<>();
     private Context context;
     private Unbinder mUnbinder;
+    GridLayoutManager layoutManager;
+    private ScrollListener mScrollListener;
     Bundle args;
 
     @Override
@@ -63,8 +68,6 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
         list = body.getResults();
         if (mCardViewAdapter == null){
             mCardViewAdapter = new CardViewAdapter(context, list, MovieListFragment.this);
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
-            nowPlayingView.setLayoutManager(layoutManager);
             nowPlayingView.setAdapter(mCardViewAdapter);
         }else{
             mCardViewAdapter.listDataChanged(list);
@@ -77,6 +80,19 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         mUnbinder = ButterKnife.bind(this, view);
+
+        layoutManager = new GridLayoutManager(context, 3);
+        nowPlayingView.setLayoutManager(layoutManager);
+        nowPlayingView.setItemAnimator(new DefaultItemAnimator());
+        mScrollListener = new ScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemCount, RecyclerView view) {
+                Timber.d("loading next page : " + page + "totalItemCount : " + totalItemCount );
+                loadNextList(page);
+            }
+        };
+        nowPlayingView.addOnScrollListener(mScrollListener);
+
         loadingBar.setVisibility(View.VISIBLE);
         String[] featureArray = getResources().getStringArray(R.array.feature);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, featureArray);
@@ -103,6 +119,25 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
         });
         return view;
     }
+
+    private void loadNextList(int page) {
+        query.put(context.getString(R.string.page), String.valueOf(page));
+        call = NetworkManager.loadMovieData(context, query);
+        call.enqueue(new Callback<DiscoverMovieData>() {
+            @Override
+            public void onResponse(Call<DiscoverMovieData> call, Response<DiscoverMovieData> response) {
+                list.addAll(response.body().getResults());
+                mCardViewAdapter.addAll(response.body().getResults());
+
+            }
+
+            @Override
+            public void onFailure(Call<DiscoverMovieData> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void callingData() {
         call = NetworkManager.loadMovieData(context, query);
         call.enqueue(new Callback<DiscoverMovieData>() {
@@ -126,10 +161,8 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
     }
 
     @Override
-    public void PostClicked(View v, int position) {
-        DiscoverMovieData.ResultsBean data = list.get(position);
-        int movieId = data.getId();
-        Toast.makeText(context, "poster clicked : " + movieId + "\n" + data.getTitle(), Toast.LENGTH_SHORT).show();
+    public void PostClicked(View v, int movieId) {
+        Toast.makeText(context, "poster clicked : " + movieId, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, DetailActivity.class);
         intent.putExtra("movieId", movieId);
         startActivity(intent);

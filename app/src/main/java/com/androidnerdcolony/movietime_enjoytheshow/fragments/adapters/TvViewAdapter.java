@@ -24,14 +24,11 @@ import butterknife.ButterKnife;
 
 public class TvViewAdapter extends RecyclerView.Adapter<TvViewAdapter.ViewHolder> {
 
+    private static PostClickListener postClickListener;
     Context context;
     List<DiscoverTvData.ResultsBean> list;
-    private static PostClickListener postClickListener;
 
-    public interface PostClickListener{
-        public void PostClicked(View v, int position);
-    }
-    public TvViewAdapter(Context context, List<DiscoverTvData.ResultsBean> list, PostClickListener postClickListener){
+    public TvViewAdapter(Context context, List<DiscoverTvData.ResultsBean> list, PostClickListener postClickListener) {
         this.context = context;
         this.list = list;
         this.postClickListener = postClickListener;
@@ -52,28 +49,28 @@ public class TvViewAdapter extends RecyclerView.Adapter<TvViewAdapter.ViewHolder
         DiscoverTvData.ResultsBean data = list.get(position);
 
         List<String> posterSize = MoviePreferenceManager.getPosterSize(context);
-
-
         String posterUrl = MoviePreferenceManager.getImageSecureBaseUrl(context)
                 + posterSize.get(3)
                 + data.getPoster_path();
         Picasso.with(context).load(posterUrl).placeholder(R.drawable.no_poster_found).error(R.drawable.no_poster_found).into(holder.posterView);
         holder.titleView.setText(data.getName());
         holder.releaseDateView.setText(data.getFirst_air_date());
-
-
-
     }
-    public void listDataChanged(List<DiscoverTvData.ResultsBean> list)
-    {
+
+    public void listDataChanged(List<DiscoverTvData.ResultsBean> list) {
         this.list.clear();
         this.list = list;
         notifyDataSetChanged();
 
     }
+
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public interface PostClickListener {
+        public void PostClicked(View v, int position);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -83,6 +80,7 @@ public class TvViewAdapter extends RecyclerView.Adapter<TvViewAdapter.ViewHolder
         TextView titleView;
         @BindView(R.id.release_date)
         TextView releaseDateView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

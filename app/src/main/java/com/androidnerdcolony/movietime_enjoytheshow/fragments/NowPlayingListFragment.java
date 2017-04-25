@@ -45,12 +45,19 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
     @BindView(R.id.feature_spinner)
     Spinner feature_spinner;
 
+    GridLayoutManager layoutManager;
+
     CardViewAdapter mCardViewAdapter;
     List<DiscoverMovieData.ResultsBean> list = new ArrayList<>();
     Map<String, String> query;
     Call<DiscoverMovieData> call;
     private Context context;
     private Unbinder mUnbinder;
+
+
+    boolean loading = true;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,8 +73,6 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
         } else {
             mCardViewAdapter.listDataChanged(list);
         }
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
-        nowPlayingView.setLayoutManager(layoutManager);
         nowPlayingView.setAdapter(mCardViewAdapter);
 
         loadingBar.setVisibility(View.GONE);
@@ -87,6 +92,10 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, featureArray);
         feature_spinner.setAdapter(adapter);
         query = NetworkManager.getDefaultQuery(context);
+
+        layoutManager = new GridLayoutManager(context, 3);
+        nowPlayingView.setLayoutManager(layoutManager);
+
         callingData();
         feature_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -134,10 +143,9 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
     }
 
     @Override
-    public void PostClicked(View v, int position) {
-        DiscoverMovieData.ResultsBean data = list.get(position);
-        int movieId = data.getId();
-        Toast.makeText(context, "poster clicked : " + movieId + "\n" + data.getTitle(), Toast.LENGTH_SHORT).show();
+    public void PostClicked(View v, int movieId) {
+
+        Toast.makeText(context, "poster clicked : " + movieId, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, DetailActivity.class);
         intent.putExtra("movieId", movieId);
         startActivity(intent);
