@@ -16,7 +16,7 @@ public abstract class ScrollListener extends RecyclerView.OnScrollListener {
     private int currentPage = 1;
     private int previousTotalItemCount = 0;
     private boolean loading = true;
-    private int startingPageIndex = 0;
+    private int startingPageIndex = 1;
 
     public ScrollListener(LinearLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
@@ -81,7 +81,7 @@ public abstract class ScrollListener extends RecyclerView.OnScrollListener {
             }
         }
     }
-    public void resetSate(){
+    public void resetState(){
         this.currentPage = this.startingPageIndex;
         this.previousTotalItemCount = 0;
         this.loading = true;

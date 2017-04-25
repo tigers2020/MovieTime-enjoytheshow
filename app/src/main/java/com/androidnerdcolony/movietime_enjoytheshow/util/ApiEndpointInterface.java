@@ -8,6 +8,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -20,9 +21,10 @@ public interface ApiEndpointInterface {
     Call<DiscoverMovieData> getDiscoverMovie(
             @QueryMap Map<String, String> options);
 
-    @GET("3/discover/movie")
+    @GET("3/movie/now_playing")
     Call<DiscoverMovieData> getDiscoverMovieNowPlaying(
-            @QueryMap Map<String, String> options);
+            @Query("language") String Language,
+            @Query("page") String page);
 
     @GET("3/discover/tv")
     Call<DiscoverTvData> getDiscoverTv(

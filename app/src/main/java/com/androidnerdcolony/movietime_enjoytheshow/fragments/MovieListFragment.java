@@ -102,8 +102,15 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
         feature_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                list.clear();
+                if (mCardViewAdapter != null) {
+                    mCardViewAdapter.clear();
+                    mCardViewAdapter.notifyDataSetChanged();
+                }
+                if (mScrollListener != null) {
+                    mScrollListener.resetState();
+                }
                 String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(adapterView.getContext(), "Selected Feature : " + item, Toast.LENGTH_SHORT).show();
                 if (i == 0) {
                     return;
                 }
@@ -126,8 +133,8 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
         call.enqueue(new Callback<DiscoverMovieData>() {
             @Override
             public void onResponse(Call<DiscoverMovieData> call, Response<DiscoverMovieData> response) {
-                list.addAll(response.body().getResults());
-                mCardViewAdapter.addAll(response.body().getResults());
+                list = response.body().getResults();
+                mCardViewAdapter.addAll(list);
 
             }
 

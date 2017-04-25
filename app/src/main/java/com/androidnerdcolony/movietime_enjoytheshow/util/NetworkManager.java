@@ -71,6 +71,9 @@ public class NetworkManager {
         return getService().getDiscoverTv(query);
 
     }
+    public static Call<DiscoverMovieData> loadNowPlayingData(Context context, String language, String page){
+        return getService().getDiscoverMovieNowPlaying(language, page);
+    }
 
     public static Map<String, String> getDefaultTvQuery(Context context) {
         Map<String, String> query = new HashMap<>();

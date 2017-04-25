@@ -18,11 +18,13 @@ import android.widget.Toast;
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.activities.DetailActivity;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.CardViewAdapter;
+import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.ScrollListener;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
 import com.androidnerdcolony.movietime_enjoytheshow.util.NetworkManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -31,6 +33,7 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Created by tiger on 4/9/2017.
@@ -44,20 +47,16 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
     ProgressBar loadingBar;
     @BindView(R.id.feature_spinner)
     Spinner feature_spinner;
-
     GridLayoutManager layoutManager;
-
     CardViewAdapter mCardViewAdapter;
     List<DiscoverMovieData.ResultsBean> list = new ArrayList<>();
     Map<String, String> query;
     Call<DiscoverMovieData> call;
-    private Context context;
-    private Unbinder mUnbinder;
-
-
     boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
-
+    private ScrollListener mScrollListener;
+    private Context context;
+    private Unbinder mUnbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,17 +90,28 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
         String[] featureArray = getResources().getStringArray(R.array.feature);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, featureArray);
         feature_spinner.setAdapter(adapter);
-        query = NetworkManager.getDefaultQuery(context);
-
         layoutManager = new GridLayoutManager(context, 3);
         nowPlayingView.setLayoutManager(layoutManager);
-
         callingData();
+        mScrollListener = new ScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemCount, RecyclerView view) {
+                Timber.d("loading next page : " + page + "totalItemCount : " + totalItemCount);
+                loadNextList(page);
+            }
+        };
+        nowPlayingView.addOnScrollListener(mScrollListener);
         feature_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(adapterView.getContext(), "Selected Feature : " + item, Toast.LENGTH_SHORT).show();
+                list.clear();
+                if (mCardViewAdapter != null) {
+                    mCardViewAdapter.clear();
+                    mCardViewAdapter.notifyDataSetChanged();
+                }
+                if (mScrollListener != null) {
+                    mScrollListener.resetState();
+                }                String item = adapterView.getItemAtPosition(i).toString();
                 if (i == 0) {
                     return;
                 }
@@ -119,8 +129,26 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
         return view;
     }
 
+    private void loadNextList(int page) {
+        String language = Locale.getDefault().getLanguage();
+        call = NetworkManager.loadNowPlayingData(context, language, String.valueOf(page));
+        call.enqueue(new Callback<DiscoverMovieData>() {
+            @Override
+            public void onResponse(Call<DiscoverMovieData> call, Response<DiscoverMovieData> response) {
+                list = response.body().getResults();
+                mCardViewAdapter.addAll(list);
+            }
+
+            @Override
+            public void onFailure(Call<DiscoverMovieData> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void callingData() {
-        call = NetworkManager.loadMovieData(context, query);
+        String language = Locale.getDefault().getLanguage();
+        call = NetworkManager.loadNowPlayingData(context, language, "1");
         call.enqueue(new Callback<DiscoverMovieData>() {
             @Override
             public void onResponse(Call<DiscoverMovieData> call, Response<DiscoverMovieData> response) {

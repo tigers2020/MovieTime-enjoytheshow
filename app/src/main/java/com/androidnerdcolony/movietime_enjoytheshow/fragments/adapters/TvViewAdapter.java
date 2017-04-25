@@ -27,6 +27,8 @@ public class TvViewAdapter extends RecyclerView.Adapter<TvViewAdapter.ViewHolder
     private static PostClickListener postClickListener;
     Context context;
     List<DiscoverTvData.ResultsBean> list;
+    private boolean isLoadingAdded;
+
 
     public TvViewAdapter(Context context, List<DiscoverTvData.ResultsBean> list, PostClickListener postClickListener) {
         this.context = context;
@@ -73,6 +75,55 @@ public class TvViewAdapter extends RecyclerView.Adapter<TvViewAdapter.ViewHolder
         public void PostClicked(View v, int position);
     }
 
+    public void addAll(List<DiscoverTvData.ResultsBean> list){
+        for (DiscoverTvData.ResultsBean movie : list){
+            add(movie);
+        }
+    }
+    public void add(DiscoverTvData.ResultsBean movie){
+        list.add(movie);
+        notifyItemInserted(list.size() - 1);
+    }
+
+    private DiscoverTvData.ResultsBean getItem(int position) {
+        return list.get(position);
+    }
+    public void listDataAdded(DiscoverTvData list) {
+        this.list.addAll(list.getResults());
+        notifyDataSetChanged();
+    }
+    public void remove(DiscoverTvData.ResultsBean movie){
+        int position = list.indexOf(movie);
+        if (position > -1){
+            list.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+    public void clear(){
+        isLoadingAdded = false;
+        while (getItemCount() > 0){
+            remove(getItem(0));
+        }
+    }
+
+    public boolean isEmpty(){
+        return getItemCount() == 0;
+    }
+    public void addLoadingFooter(){
+        isLoadingAdded = true;
+        add(new DiscoverTvData.ResultsBean());
+    }
+    public void removeLoadingFooter(){
+        isLoadingAdded = false;
+
+        int position = list.size() -1;
+        DiscoverTvData.ResultsBean movieItem = getItem(position);
+
+        if (movieItem!= null){
+            list.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.poster)
         ImageView posterView;

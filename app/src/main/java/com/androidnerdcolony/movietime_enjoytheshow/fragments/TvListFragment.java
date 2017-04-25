@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.androidnerdcolony.movietime_enjoytheshow.R;
 import com.androidnerdcolony.movietime_enjoytheshow.activities.DetailActivity;
+import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.ScrollListener;
 import com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters.TvViewAdapter;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverTvData;
 import com.androidnerdcolony.movietime_enjoytheshow.util.NetworkManager;
@@ -51,6 +52,7 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
     private List<DiscoverTvData.ResultsBean> list = new ArrayList<>();
     private Context context;
     private Unbinder mUnbinder;
+    private ScrollListener mScrollListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,8 +88,17 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
         feature_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                list.clear();
+                if (mCardViewAdapter != null) {
+                    mCardViewAdapter.clear();
+                    mCardViewAdapter.notifyDataSetChanged();
+                }
+                if (mScrollListener != null) {
+                    mScrollListener.resetState();
+                }
+
                 String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(adapterView.getContext(), "Selected Feature : " + item, Toast.LENGTH_SHORT).show();
+
                 if (i == 0) {
                     return;
                 }
