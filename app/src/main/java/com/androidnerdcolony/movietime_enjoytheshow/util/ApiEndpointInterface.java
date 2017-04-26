@@ -1,5 +1,6 @@
 package com.androidnerdcolony.movietime_enjoytheshow.util;
 
+
 import com.androidnerdcolony.movietime_enjoytheshow.objects.ConfigurationData;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverMovieData;
 import com.androidnerdcolony.movietime_enjoytheshow.objects.DiscoverTvData;

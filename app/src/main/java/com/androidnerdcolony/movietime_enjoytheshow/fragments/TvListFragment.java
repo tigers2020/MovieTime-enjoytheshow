@@ -46,13 +46,15 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
     ProgressBar loadingBar;
     @BindView(R.id.feature_spinner)
     Spinner feature_spinner;
+    GridLayoutManager layoutManager;
     TvViewAdapter mCardViewAdapter;
+    List<DiscoverTvData.ResultsBean> list = new ArrayList<>();
     Map<String, String> query;
     Call<DiscoverTvData> call;
-    private List<DiscoverTvData.ResultsBean> list = new ArrayList<>();
+
+    private ScrollListener mScrollListener;
     private Context context;
     private Unbinder mUnbinder;
-    private ScrollListener mScrollListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,19 +62,20 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
         context = getContext();
     }
 
-    private void loadDataIntoAdapter(DiscoverTvData body) {
-        list = body.getResults();
-        if (mCardViewAdapter == null){
-            mCardViewAdapter = new TvViewAdapter(context, list, TvListFragment.this);
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3);
-            nowPlayingView.setLayoutManager(layoutManager);
+    private void loadDataIntoAdapter(DiscoverTvData data) {
+        list = data.getResults();
 
-            nowPlayingView.setAdapter(mCardViewAdapter);
-        }else{
+        if (mCardViewAdapter == null) {
+            mCardViewAdapter = new TvViewAdapter(context, list,TvListFragment.this);
+        } else {
             mCardViewAdapter.listDataChanged(list);
         }
+        nowPlayingView.setAdapter(mCardViewAdapter);
+
         loadingBar.setVisibility(View.GONE);
+
     }
+
 
     @Nullable
     @Override
@@ -80,11 +83,23 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         loadingBar.setVisibility(View.VISIBLE);
+
+
         String[] featureArray = getResources().getStringArray(R.array.feature);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, featureArray);
         feature_spinner.setAdapter(adapter);
+        layoutManager = new GridLayoutManager(context, 3);
+        nowPlayingView.setLayoutManager(layoutManager);
         query = NetworkManager.getDefaultTvQuery(context);
         callingData();
+        mScrollListener = new ScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemCount, RecyclerView view) {
+                Timber.d("loading next page : " + page + "totalItemCount : " + totalItemCount);
+                loadNextList(page);
+            }
+        };
+        nowPlayingView.addOnScrollListener(mScrollListener);
         feature_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -96,9 +111,7 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
                 if (mScrollListener != null) {
                     mScrollListener.resetState();
                 }
-
                 String item = adapterView.getItemAtPosition(i).toString();
-
                 if (i == 0) {
                     return;
                 }
@@ -112,19 +125,40 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
 
             }
         });
+
         return view;
     }
+
+    private void loadNextList(int page) {
+
+        query.put(getString(R.string.page), String.valueOf(page));
+        call = NetworkManager.loadTvData(context, query);
+        call.enqueue(new Callback<DiscoverTvData>() {
+            @Override
+            public void onResponse(Call<DiscoverTvData> call, Response<DiscoverTvData> response) {
+                list = response.body().getResults();
+                mCardViewAdapter.addAll(list);
+            }
+
+            @Override
+            public void onFailure(Call<DiscoverTvData> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void callingData() {
         call = NetworkManager.loadTvData(context, query);
         call.enqueue(new Callback<DiscoverTvData>() {
             @Override
             public void onResponse(Call<DiscoverTvData> call, Response<DiscoverTvData> response) {
                 loadDataIntoAdapter(response.body());
+
             }
 
             @Override
             public void onFailure(Call<DiscoverTvData> call, Throwable t) {
-                Timber.d("tv loading failed");
+                Timber.d("loading Failed: " + t.getMessage());
 
             }
         });
@@ -138,13 +172,11 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
     }
 
     @Override
-    public void PostClicked(View v, int position) {
-        DiscoverTvData.ResultsBean data = list.get(position);
-        int movieId = data.getId();
-        Toast.makeText(context, "poster clicked : " + movieId + "\n" + data.getName(), Toast.LENGTH_SHORT).show();
+    public void PostClicked(View v, int movieId) {
+
+        Toast.makeText(context, "poster clicked : " + movieId, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, DetailActivity.class);
         intent.putExtra("movieId", movieId);
         startActivity(intent);
     }
-
 }

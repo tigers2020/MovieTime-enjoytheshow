@@ -80,6 +80,7 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         mUnbinder = ButterKnife.bind(this, view);
+        loadingBar.setVisibility(View.VISIBLE);
 
         layoutManager = new GridLayoutManager(context, 3);
         nowPlayingView.setLayoutManager(layoutManager);
@@ -93,7 +94,6 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
         };
         nowPlayingView.addOnScrollListener(mScrollListener);
 
-        loadingBar.setVisibility(View.VISIBLE);
         String[] featureArray = getResources().getStringArray(R.array.feature);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, featureArray);
         feature_spinner.setAdapter(adapter);

@@ -11,7 +11,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 
 public abstract class ScrollListener extends RecyclerView.OnScrollListener {
 
-    RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
     private int visibleThreadHold = 5;
     private int currentPage = 1;
     private int previousTotalItemCount = 0;

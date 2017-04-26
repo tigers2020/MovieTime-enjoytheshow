@@ -52,8 +52,7 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
     List<DiscoverMovieData.ResultsBean> list = new ArrayList<>();
     Map<String, String> query;
     Call<DiscoverMovieData> call;
-    boolean loading = true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
+
     private ScrollListener mScrollListener;
     private Context context;
     private Unbinder mUnbinder;
@@ -111,7 +110,8 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
                 }
                 if (mScrollListener != null) {
                     mScrollListener.resetState();
-                }                String item = adapterView.getItemAtPosition(i).toString();
+                }
+                String item = adapterView.getItemAtPosition(i).toString();
                 if (i == 0) {
                     return;
                 }

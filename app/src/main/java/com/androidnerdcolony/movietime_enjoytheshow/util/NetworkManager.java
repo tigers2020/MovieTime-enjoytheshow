@@ -21,6 +21,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
+
 /**
  * Created by tiger on 4/10/2017.
  */
@@ -80,7 +81,7 @@ public class NetworkManager {
         query.put(context.getString(R.string.language), MoviePreferenceManager.getLanguage(context));
         query.put(context.getString(R.string.sort_by), MoviePreferenceManager.getSortBy(context));
         query.put(context.getString(R.string.include_null_first_air_dates), "false");
-
+        query.put(context.getString(R.string.page), "1");
         query.put(context.getString(R.string.timezone), MoviePreferenceManager.getTimezone(context));
         return query;
     }
