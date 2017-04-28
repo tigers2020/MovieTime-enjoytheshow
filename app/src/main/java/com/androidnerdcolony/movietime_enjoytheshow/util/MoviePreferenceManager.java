@@ -25,19 +25,19 @@ public class MoviePreferenceManager {
     public static String getSortBy(Context context) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(context.getString(R.string.sort_by), context.getString(R.string.popularity_desc));
+        return preferences.getString(context.getString(R.string.query_sort_by), context.getString(R.string.popularity_desc));
     }
 
     public static void setSortBy(Context context, String sortBy) {
         SharedPreferences.Editor preferences = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        preferences.putString(context.getString(R.string.sort_by), sortBy).apply();
+        preferences.putString(context.getString(R.string.query_sort_by), sortBy).apply();
     }
 
     public static String isIncludeAdult(Context context) {
         boolean isIncludeAdult;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        isIncludeAdult = preferences.contains(context.getString(R.string.include_adult)) &&
-                preferences.getBoolean(context.getString(R.string.include_adult), false);
+        isIncludeAdult = preferences.contains(context.getString(R.string.query_include_adult)) &&
+                preferences.getBoolean(context.getString(R.string.query_include_adult), false);
         if (isIncludeAdult) {
             return "true";
         } else {
@@ -48,15 +48,15 @@ public class MoviePreferenceManager {
     public static void setIncludeAdult(Context context, boolean isIncludedAdult) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(context.getString(R.string.include_adult), isIncludedAdult);
+        editor.putBoolean(context.getString(R.string.query_include_adult), isIncludedAdult);
         editor.apply();
     }
 
     public static String isIncludeVideo(Context context) {
         boolean isIncludeVideo;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        isIncludeVideo = preferences.contains(context.getString(R.string.include_video)) &&
-                preferences.getBoolean(context.getString(R.string.include_video), false);
+        isIncludeVideo = preferences.contains(context.getString(R.string.query_include_video)) &&
+                preferences.getBoolean(context.getString(R.string.query_include_video), false);
         if (isIncludeVideo) {
             return "true";
         } else {
@@ -66,7 +66,7 @@ public class MoviePreferenceManager {
 
     public static void setIncludeVideo(Context context, boolean isIncludeVideo) {
         SharedPreferences.Editor preferences = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        preferences.putBoolean(context.getString(R.string.include_video), isIncludeVideo).apply();
+        preferences.putBoolean(context.getString(R.string.query_include_video), isIncludeVideo).apply();
 
     }
 
@@ -116,22 +116,22 @@ public class MoviePreferenceManager {
 
     private static void setLanguage(Context context, String language) {
         SharedPreferences.Editor preferences = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        preferences.putString(context.getString(R.string.language), language).apply();
+        preferences.putString(context.getString(R.string.query_language), language).apply();
     }
 
     public static String getLanguage(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(context.getString(R.string.language), Locale.getDefault().getLanguage());
+        return preferences.getString(context.getString(R.string.query_language), Locale.getDefault().getLanguage());
     }
 
     private static void setRegion(Context context, String country) {
         SharedPreferences.Editor preferences = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        preferences.putString(context.getString(R.string.region), country).apply();
+        preferences.putString(context.getString(R.string.query_region), country).apply();
     }
 
     public static String getRegion(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(context.getString(R.string.region), Locale.getDefault().getCountry());
+        return preferences.getString(context.getString(R.string.query_region), Locale.getDefault().getCountry());
     }
 
     private static void setImageSecureBaseUrl(Context context, String secure_base_url) {

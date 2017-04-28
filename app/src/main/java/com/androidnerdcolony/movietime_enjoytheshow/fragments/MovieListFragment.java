@@ -114,7 +114,7 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
                 if (i == 0) {
                     return;
                 }
-                query.put(context.getString(R.string.sort_by), item);
+                query.put(context.getString(R.string.query_sort_by), item);
                 loadingBar.setVisibility(View.VISIBLE);
                 callingData();
             }
@@ -128,7 +128,7 @@ public class MovieListFragment extends BaseFragment implements CardViewAdapter.P
     }
 
     private void loadNextList(int page) {
-        query.put(context.getString(R.string.page), String.valueOf(page));
+        query.put(context.getString(R.string.query_page), String.valueOf(page));
         call = NetworkManager.loadMovieData(context, query);
         call.enqueue(new Callback<DiscoverMovieData>() {
             @Override

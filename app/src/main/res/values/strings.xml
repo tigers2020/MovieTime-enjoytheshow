@@ -63,7 +63,6 @@
     <string name="path_multi" translatable="false">multi</string>
     <string name="path_timezones" translatable="false">timezones</string>
     <string name="path_episode" translatable="false">episode</string>
-    <string name="query_language" translatable="false">language</string>
 
     <!-- sort_by -->
     <string name="popularity_asc" translatable="false">popularity.asc</string>
@@ -82,37 +81,38 @@
     <string name="vote_count_desc" translatable="false">vote_count.desc</string>
 
     <!-- Query String -->
-    <string name="api_key" translatable="false">api_key</string>
-    <string name="sort_by" translatable="false">sort_by</string>
-    <string name="language" translatable="false">language</string>
-    <string name="region" translatable="false">region</string>
-    <string name="certification_country" translatable="false">certification_country</string>
-    <string name="certification" translatable="false">certification</string>
-    <string name="certification_lte" translatable="false">certification.lte</string>
-    <string name="include_adult" translatable="false">include_adult</string>
-    <string name="include_video" translatable="false">include_video</string>
-    <string name="page" translatable="false">page</string>
-    <string name="primary_release_year" translatable="false">primary_release_year</string>
-    <string name="primary_release_date_gte" translatable="false">primary_release_date.gte</string>
-    <string name="primary_release_date_lte" translatable="false">primary_release_date.lte</string>
-    <string name="release_date_gte" translatable="false">release_date.gte</string>
-    <string name="release_date_lte" translatable="false">release_date.lte</string>
-    <string name="vote_count_gte" translatable="false">vote_count.gte</string>
-    <string name="vote_count_lte" translatable="false">vote_count.lte</string>
-    <string name="vote_average_gte" translatable="false">vote_average.gte</string>
-    <string name="vote_average_lte" translatable="false">vote_average.lte</string>
-    <string name="with_cast" translatable="false">with_cast</string>
-    <string name="with_crew" translatable="false">with_crew</string>
-    <string name="with_companies" translatable="false">with_companies</string>
-    <string name="with_genres" translatable="false">with_genres</string>
-    <string name="with_keywords" translatable="false">with_keywords</string>
-    <string name="with_people" translatable="false">with_people</string>
-    <string name="year" translatable="false">year</string>
-    <string name="with_runtime_gte" translatable="false">with_runtime.gte</string>
-    <string name="with_runtime_lte" translatable="false">with_runtime.lte</string>
-    <string name="with_release_type" translatable="false">with_release_type</string>
-    <string name="with_original_language" translatable="false">with_original_language</string>
-    <string name="without_keywords" translatable="false">without_keywords</string>
+    <string name="query_api_key" translatable="false">api_key</string>
+    <string name="query_sort_by" translatable="false">sort_by</string>
+    <string name="query_language" translatable="false">language</string>
+    <string name="query_region" translatable="false">region</string>
+    <string name="query_certification_country" translatable="false">certification_country</string>
+    <string name="query_certification" translatable="false">certification</string>
+    <string name="query_certification_lte" translatable="false">certification.lte</string>
+    <string name="query_include_adult" translatable="false">include_adult</string>
+    <string name="query_include_video" translatable="false">include_video</string>
+    <string name="query_page" translatable="false">page</string>
+    <string name="query_primary_release_year" translatable="false">primary_release_year</string>
+    <string name="query_primary_release_date_gte" translatable="false">primary_release_date.gte</string>
+    <string name="query_primary_release_date_lte" translatable="false">primary_release_date.lte</string>
+    <string name="query_release_date_gte" translatable="false">release_date.gte</string>
+    <string name="query_release_date_lte" translatable="false">release_date.lte</string>
+    <string name="query_vote_count_gte" translatable="false">vote_count.gte</string>
+    <string name="query_vote_count_lte" translatable="false">vote_count.lte</string>
+    <string name="query_vote_average_gte" translatable="false">vote_average.gte</string>
+    <string name="query_vote_average_lte" translatable="false">vote_average.lte</string>
+    <string name="query_with_cast" translatable="false">with_cast</string>
+    <string name="query_with_crew" translatable="false">with_crew</string>
+    <string name="query_with_companies" translatable="false">with_companies</string>
+    <string name="query_with_genres" translatable="false">with_genres</string>
+    <string name="query_with_keywords" translatable="false">with_keywords</string>
+    <string name="query_with_people" translatable="false">with_people</string>
+    <string name="query_year" translatable="false">year</string>
+    <string name="query_with_runtime_gte" translatable="false">with_runtime.gte</string>
+    <string name="query_with_runtime_lte" translatable="false">with_runtime.lte</string>
+    <string name="query_with_release_type" translatable="false">with_release_type</string>
+    <string name="query_with_original_language" translatable="false">with_original_language</string>
+    <string name="query_without_keywords" translatable="false">without_keywords</string>
+
     <string name="movie_backdrop_image">movie backdrop image</string>
     <string name="home">Home</string>
     <string name="image_base_url">image_base_url</string>
@@ -122,7 +122,18 @@
     <string name="profile_size">profile_size</string>
     <string name="still_size">still_size</string>
     <string name="image_secure_base_url">image_secure_base_url</string>
-    <string name="movie_id">movie_id</string>
-    <string name="timezone">timezone</string>
-    <string name="include_null_first_air_dates">include_null_first_air_dates</string>
+    <string name="query_movie_id">movie_id</string>
+    <string name="query_timezone">timezone</string>
+    <string name="query_include_null_first_air_dates">include_null_first_air_dates</string>
+    <string name="query_rating">Rating</string>
+    <string name="query_overview">OverView</string>
+    <string name="query_trailer">Trailer</string>
+    <string name="query_similar_movie_list">Similar Movie List</string>
+    <string name="query_recommended_movie_list">Recommended Movie List</string>
+    <string name="query_without_genres">query_without_genres</string>
+    <string name="query_air_date_gte">air_date.gte</string>
+    <string name="query_air_date_lte">air_date.lte</string>
+    <string name="query_first_air_date_gte">first_air_date.gte</string>
+    <string name="query_first_air_date_lte">first_air_date.lte</string>
+    <string name="query_with_network">with_networks</string>
 </resources>

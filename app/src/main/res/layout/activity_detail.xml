@@ -7,4 +7,106 @@
     android:layout_height="match_parent"
     tools:context="com.androidnerdcolony.movietime_enjoytheshow.activities.DetailActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="2dp">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.Toolbar
+                android:layout_width="0dp"
+                android:id="@+id/toolbar"
+                android:layout_height="56dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="0dp"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginLeft="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+            <TableLayout
+                android:layout_width="0dp"
+                android:background="@color/colorPrimary"
+                android:layout_height="56dp"
+                android:id="@+id/detail_tabs"
+                android:layout_marginRight="0dp"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginLeft="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"/>
+
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/images"
+                android:layout_width="0dp"
+                android:layout_height="185dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="114dp"
+                android:layout_height="165dp"
+                app:srcCompat="@drawable/no_poster_found"
+                tools:layout_editor_absoluteX="31dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/detail_tabs"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rate"
+                app:layout_constraintLeft_toRightOf="@+id/imageView"
+                android:layout_marginLeft="8dp"
+                tools:layout_editor_absoluteY="249dp"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="0dp"
+                app:layout_constraintLeft_toRightOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/textView"
+                android:text="@string/release_date"/>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/darkColor"
+                app:layout_constraintLeft_toRightOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                android:text="movie title"/>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintLeft_toRightOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                android:text="@string/genres"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
 </android.support.constraint.ConstraintLayout>

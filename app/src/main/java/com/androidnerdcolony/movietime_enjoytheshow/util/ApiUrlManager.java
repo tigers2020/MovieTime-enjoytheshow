@@ -66,7 +66,7 @@ public class ApiUrlManager {
         }
 
         ApiBuilder apiKey() {
-            this.uri = this.uri.buildUpon().appendQueryParameter(mContext.getString(R.string.api_key), API_KEY).build();
+            //this.uri = this.uri.buildUpon().appendQueryParameter(mContext.getString(R.string.api_key), API_KEY).build();
             return this;
         }
 

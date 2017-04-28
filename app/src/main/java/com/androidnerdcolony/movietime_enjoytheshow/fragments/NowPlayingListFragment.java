@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -84,11 +82,6 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         loadingBar.setVisibility(View.VISIBLE);
-
-
-        String[] featureArray = getResources().getStringArray(R.array.feature);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, featureArray);
-        feature_spinner.setAdapter(adapter);
         layoutManager = new GridLayoutManager(context, 3);
         nowPlayingView.setLayoutManager(layoutManager);
         callingData();
@@ -100,31 +93,7 @@ public class NowPlayingListFragment extends BaseFragment implements CardViewAdap
             }
         };
         nowPlayingView.addOnScrollListener(mScrollListener);
-        feature_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                list.clear();
-                if (mCardViewAdapter != null) {
-                    mCardViewAdapter.clear();
-                    mCardViewAdapter.notifyDataSetChanged();
-                }
-                if (mScrollListener != null) {
-                    mScrollListener.resetState();
-                }
-                String item = adapterView.getItemAtPosition(i).toString();
-                if (i == 0) {
-                    return;
-                }
-                query.put(context.getString(R.string.sort_by), item);
-                loadingBar.setVisibility(View.VISIBLE);
-                callingData();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        feature_spinner.setVisibility(View.GONE);
 
         return view;
     }

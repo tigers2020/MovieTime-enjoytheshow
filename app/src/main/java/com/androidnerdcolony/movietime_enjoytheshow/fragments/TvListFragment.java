@@ -115,7 +115,7 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
                 if (i == 0) {
                     return;
                 }
-                query.put(context.getString(R.string.sort_by), item);
+                query.put(context.getString(R.string.query_sort_by), item);
                 loadingBar.setVisibility(View.VISIBLE);
                 callingData();
             }
@@ -131,7 +131,7 @@ public class TvListFragment extends BaseFragment implements TvViewAdapter.PostCl
 
     private void loadNextList(int page) {
 
-        query.put(getString(R.string.page), String.valueOf(page));
+        query.put(getString(R.string.query_page), String.valueOf(page));
         call = NetworkManager.loadTvData(context, query);
         call.enqueue(new Callback<DiscoverTvData>() {
             @Override
