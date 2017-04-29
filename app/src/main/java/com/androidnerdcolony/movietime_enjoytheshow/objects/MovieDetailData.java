@@ -6,7 +6,7 @@ import java.util.List;
  * Created by tiger on 4/12/2017.
  */
 
-public class MovieData {
+public class MovieDetailData {
 
     /**
      * adult : false

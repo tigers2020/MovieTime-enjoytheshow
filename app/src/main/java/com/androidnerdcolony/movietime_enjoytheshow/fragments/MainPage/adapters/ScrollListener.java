@@ -1,4 +1,4 @@
-package com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters;
+package com.androidnerdcolony.movietime_enjoytheshow.fragments.MainPage.adapters;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

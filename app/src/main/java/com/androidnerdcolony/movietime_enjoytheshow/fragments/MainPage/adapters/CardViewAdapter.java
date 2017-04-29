@@ -1,4 +1,4 @@
-package com.androidnerdcolony.movietime_enjoytheshow.fragments.adapters;
+package com.androidnerdcolony.movietime_enjoytheshow.fragments.MainPage.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

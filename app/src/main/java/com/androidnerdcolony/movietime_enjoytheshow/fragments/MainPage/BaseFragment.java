@@ -1,4 +1,4 @@
-package com.androidnerdcolony.movietime_enjoytheshow.fragments;
+package com.androidnerdcolony.movietime_enjoytheshow.fragments.MainPage;
 
 import android.support.v4.app.Fragment;
 
